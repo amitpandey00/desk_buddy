@@ -2858,6 +2858,21 @@ class $SettingsTableTable extends SettingsTable
     ),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _buddyAlwaysOnMeta = const VerificationMeta(
+    'buddyAlwaysOn',
+  );
+  @override
+  late final GeneratedColumn<bool> buddyAlwaysOn = GeneratedColumn<bool>(
+    'buddy_always_on',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("buddy_always_on" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   static const VerificationMeta _buddyXMeta = const VerificationMeta('buddyX');
   @override
   late final GeneratedColumn<double> buddyX = GeneratedColumn<double>(
@@ -2891,6 +2906,7 @@ class $SettingsTableTable extends SettingsTable
     themeMode,
     launchAtLogin,
     focusPopups,
+    buddyAlwaysOn,
     buddyX,
     buddyY,
   ];
@@ -3019,6 +3035,15 @@ class $SettingsTableTable extends SettingsTable
         ),
       );
     }
+    if (data.containsKey('buddy_always_on')) {
+      context.handle(
+        _buddyAlwaysOnMeta,
+        buddyAlwaysOn.isAcceptableOrUnknown(
+          data['buddy_always_on']!,
+          _buddyAlwaysOnMeta,
+        ),
+      );
+    }
     if (data.containsKey('buddy_x')) {
       context.handle(
         _buddyXMeta,
@@ -3094,6 +3119,10 @@ class $SettingsTableTable extends SettingsTable
         DriftSqlType.bool,
         data['${effectivePrefix}focus_popups'],
       )!,
+      buddyAlwaysOn: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}buddy_always_on'],
+      )!,
       buddyX: attachedDatabase.typeMapping.read(
         DriftSqlType.double,
         data['${effectivePrefix}buddy_x'],
@@ -3132,6 +3161,9 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
 
   /// Added in schema v2.
   final bool focusPopups;
+
+  /// Added in schema v3.
+  final bool buddyAlwaysOn;
   final double? buddyX;
   final double? buddyY;
   const SettingsRow({
@@ -3148,6 +3180,7 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
     required this.themeMode,
     required this.launchAtLogin,
     required this.focusPopups,
+    required this.buddyAlwaysOn,
     this.buddyX,
     this.buddyY,
   });
@@ -3171,6 +3204,7 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
     }
     map['launch_at_login'] = Variable<bool>(launchAtLogin);
     map['focus_popups'] = Variable<bool>(focusPopups);
+    map['buddy_always_on'] = Variable<bool>(buddyAlwaysOn);
     if (!nullToAbsent || buddyX != null) {
       map['buddy_x'] = Variable<double>(buddyX);
     }
@@ -3195,6 +3229,7 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
       themeMode: Value(themeMode),
       launchAtLogin: Value(launchAtLogin),
       focusPopups: Value(focusPopups),
+      buddyAlwaysOn: Value(buddyAlwaysOn),
       buddyX: buddyX == null && nullToAbsent
           ? const Value.absent()
           : Value(buddyX),
@@ -3225,6 +3260,7 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
       ),
       launchAtLogin: serializer.fromJson<bool>(json['launchAtLogin']),
       focusPopups: serializer.fromJson<bool>(json['focusPopups']),
+      buddyAlwaysOn: serializer.fromJson<bool>(json['buddyAlwaysOn']),
       buddyX: serializer.fromJson<double?>(json['buddyX']),
       buddyY: serializer.fromJson<double?>(json['buddyY']),
     );
@@ -3248,6 +3284,7 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
       ),
       'launchAtLogin': serializer.toJson<bool>(launchAtLogin),
       'focusPopups': serializer.toJson<bool>(focusPopups),
+      'buddyAlwaysOn': serializer.toJson<bool>(buddyAlwaysOn),
       'buddyX': serializer.toJson<double?>(buddyX),
       'buddyY': serializer.toJson<double?>(buddyY),
     };
@@ -3267,6 +3304,7 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
     ThemePreference? themeMode,
     bool? launchAtLogin,
     bool? focusPopups,
+    bool? buddyAlwaysOn,
     Value<double?> buddyX = const Value.absent(),
     Value<double?> buddyY = const Value.absent(),
   }) => SettingsRow(
@@ -3283,6 +3321,7 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
     themeMode: themeMode ?? this.themeMode,
     launchAtLogin: launchAtLogin ?? this.launchAtLogin,
     focusPopups: focusPopups ?? this.focusPopups,
+    buddyAlwaysOn: buddyAlwaysOn ?? this.buddyAlwaysOn,
     buddyX: buddyX.present ? buddyX.value : this.buddyX,
     buddyY: buddyY.present ? buddyY.value : this.buddyY,
   );
@@ -3317,6 +3356,9 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
       focusPopups: data.focusPopups.present
           ? data.focusPopups.value
           : this.focusPopups,
+      buddyAlwaysOn: data.buddyAlwaysOn.present
+          ? data.buddyAlwaysOn.value
+          : this.buddyAlwaysOn,
       buddyX: data.buddyX.present ? data.buddyX.value : this.buddyX,
       buddyY: data.buddyY.present ? data.buddyY.value : this.buddyY,
     );
@@ -3338,6 +3380,7 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
           ..write('themeMode: $themeMode, ')
           ..write('launchAtLogin: $launchAtLogin, ')
           ..write('focusPopups: $focusPopups, ')
+          ..write('buddyAlwaysOn: $buddyAlwaysOn, ')
           ..write('buddyX: $buddyX, ')
           ..write('buddyY: $buddyY')
           ..write(')'))
@@ -3359,6 +3402,7 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
     themeMode,
     launchAtLogin,
     focusPopups,
+    buddyAlwaysOn,
     buddyX,
     buddyY,
   );
@@ -3379,6 +3423,7 @@ class SettingsRow extends DataClass implements Insertable<SettingsRow> {
           other.themeMode == this.themeMode &&
           other.launchAtLogin == this.launchAtLogin &&
           other.focusPopups == this.focusPopups &&
+          other.buddyAlwaysOn == this.buddyAlwaysOn &&
           other.buddyX == this.buddyX &&
           other.buddyY == this.buddyY);
 }
@@ -3397,6 +3442,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingsRow> {
   final Value<ThemePreference> themeMode;
   final Value<bool> launchAtLogin;
   final Value<bool> focusPopups;
+  final Value<bool> buddyAlwaysOn;
   final Value<double?> buddyX;
   final Value<double?> buddyY;
   const SettingsTableCompanion({
@@ -3413,6 +3459,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingsRow> {
     this.themeMode = const Value.absent(),
     this.launchAtLogin = const Value.absent(),
     this.focusPopups = const Value.absent(),
+    this.buddyAlwaysOn = const Value.absent(),
     this.buddyX = const Value.absent(),
     this.buddyY = const Value.absent(),
   });
@@ -3430,6 +3477,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingsRow> {
     required ThemePreference themeMode,
     required bool launchAtLogin,
     this.focusPopups = const Value.absent(),
+    this.buddyAlwaysOn = const Value.absent(),
     this.buddyX = const Value.absent(),
     this.buddyY = const Value.absent(),
   }) : userName = Value(userName),
@@ -3457,6 +3505,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingsRow> {
     Expression<String>? themeMode,
     Expression<bool>? launchAtLogin,
     Expression<bool>? focusPopups,
+    Expression<bool>? buddyAlwaysOn,
     Expression<double>? buddyX,
     Expression<double>? buddyY,
   }) {
@@ -3474,6 +3523,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingsRow> {
       if (themeMode != null) 'theme_mode': themeMode,
       if (launchAtLogin != null) 'launch_at_login': launchAtLogin,
       if (focusPopups != null) 'focus_popups': focusPopups,
+      if (buddyAlwaysOn != null) 'buddy_always_on': buddyAlwaysOn,
       if (buddyX != null) 'buddy_x': buddyX,
       if (buddyY != null) 'buddy_y': buddyY,
     });
@@ -3493,6 +3543,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingsRow> {
     Value<ThemePreference>? themeMode,
     Value<bool>? launchAtLogin,
     Value<bool>? focusPopups,
+    Value<bool>? buddyAlwaysOn,
     Value<double?>? buddyX,
     Value<double?>? buddyY,
   }) {
@@ -3510,6 +3561,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingsRow> {
       themeMode: themeMode ?? this.themeMode,
       launchAtLogin: launchAtLogin ?? this.launchAtLogin,
       focusPopups: focusPopups ?? this.focusPopups,
+      buddyAlwaysOn: buddyAlwaysOn ?? this.buddyAlwaysOn,
       buddyX: buddyX ?? this.buddyX,
       buddyY: buddyY ?? this.buddyY,
     );
@@ -3559,6 +3611,9 @@ class SettingsTableCompanion extends UpdateCompanion<SettingsRow> {
     if (focusPopups.present) {
       map['focus_popups'] = Variable<bool>(focusPopups.value);
     }
+    if (buddyAlwaysOn.present) {
+      map['buddy_always_on'] = Variable<bool>(buddyAlwaysOn.value);
+    }
     if (buddyX.present) {
       map['buddy_x'] = Variable<double>(buddyX.value);
     }
@@ -3584,6 +3639,7 @@ class SettingsTableCompanion extends UpdateCompanion<SettingsRow> {
           ..write('themeMode: $themeMode, ')
           ..write('launchAtLogin: $launchAtLogin, ')
           ..write('focusPopups: $focusPopups, ')
+          ..write('buddyAlwaysOn: $buddyAlwaysOn, ')
           ..write('buddyX: $buddyX, ')
           ..write('buddyY: $buddyY')
           ..write(')'))
@@ -5169,6 +5225,7 @@ typedef $$SettingsTableTableCreateCompanionBuilder =
       required ThemePreference themeMode,
       required bool launchAtLogin,
       Value<bool> focusPopups,
+      Value<bool> buddyAlwaysOn,
       Value<double?> buddyX,
       Value<double?> buddyY,
     });
@@ -5187,6 +5244,7 @@ typedef $$SettingsTableTableUpdateCompanionBuilder =
       Value<ThemePreference> themeMode,
       Value<bool> launchAtLogin,
       Value<bool> focusPopups,
+      Value<bool> buddyAlwaysOn,
       Value<double?> buddyX,
       Value<double?> buddyY,
     });
@@ -5263,6 +5321,11 @@ class $$SettingsTableTableFilterComposer
 
   ColumnFilters<bool> get focusPopups => $composableBuilder(
     column: $table.focusPopups,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get buddyAlwaysOn => $composableBuilder(
+    column: $table.buddyAlwaysOn,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5351,6 +5414,11 @@ class $$SettingsTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get buddyAlwaysOn => $composableBuilder(
+    column: $table.buddyAlwaysOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<double> get buddyX => $composableBuilder(
     column: $table.buddyX,
     builder: (column) => ColumnOrderings(column),
@@ -5426,6 +5494,11 @@ class $$SettingsTableTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<bool> get buddyAlwaysOn => $composableBuilder(
+    column: $table.buddyAlwaysOn,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<double> get buddyX =>
       $composableBuilder(column: $table.buddyX, builder: (column) => column);
 
@@ -5477,6 +5550,7 @@ class $$SettingsTableTableTableManager
                 Value<ThemePreference> themeMode = const Value.absent(),
                 Value<bool> launchAtLogin = const Value.absent(),
                 Value<bool> focusPopups = const Value.absent(),
+                Value<bool> buddyAlwaysOn = const Value.absent(),
                 Value<double?> buddyX = const Value.absent(),
                 Value<double?> buddyY = const Value.absent(),
               }) => SettingsTableCompanion(
@@ -5493,6 +5567,7 @@ class $$SettingsTableTableTableManager
                 themeMode: themeMode,
                 launchAtLogin: launchAtLogin,
                 focusPopups: focusPopups,
+                buddyAlwaysOn: buddyAlwaysOn,
                 buddyX: buddyX,
                 buddyY: buddyY,
               ),
@@ -5511,6 +5586,7 @@ class $$SettingsTableTableTableManager
                 required ThemePreference themeMode,
                 required bool launchAtLogin,
                 Value<bool> focusPopups = const Value.absent(),
+                Value<bool> buddyAlwaysOn = const Value.absent(),
                 Value<double?> buddyX = const Value.absent(),
                 Value<double?> buddyY = const Value.absent(),
               }) => SettingsTableCompanion.insert(
@@ -5527,6 +5603,7 @@ class $$SettingsTableTableTableManager
                 themeMode: themeMode,
                 launchAtLogin: launchAtLogin,
                 focusPopups: focusPopups,
+                buddyAlwaysOn: buddyAlwaysOn,
                 buddyX: buddyX,
                 buddyY: buddyY,
               ),

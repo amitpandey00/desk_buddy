@@ -740,8 +740,193 @@ i1.GeneratedColumn<double> _column_55(String aliasedName) =>
       type: i1.DriftSqlType.double,
       $customConstraints: 'NULL',
     );
+
+final class Schema3 extends i0.VersionedSchema {
+  Schema3({required super.database}) : super(version: 3);
+  @override
+  late final List<i1.DatabaseSchemaEntity> entities = [
+    categories,
+    reminders,
+    logEntries,
+    buddyLooks,
+    settings,
+    logEntriesAt,
+    logEntriesReminderAt,
+  ];
+  late final Shape0 categories = Shape0(
+    source: i0.VersionedTable(
+      entityName: 'categories',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [_column_0, _column_1, _column_2, _column_3, _column_4],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape1 reminders = Shape1(
+    source: i0.VersionedTable(
+      entityName: 'reminders',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_5,
+        _column_2,
+        _column_6,
+        _column_7,
+        _column_8,
+        _column_9,
+        _column_10,
+        _column_11,
+        _column_12,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_18,
+        _column_19,
+        _column_20,
+        _column_21,
+        _column_22,
+        _column_23,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape2 logEntries = Shape2(
+    source: i0.VersionedTable(
+      entityName: 'log_entries',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_24,
+        _column_25,
+        _column_26,
+        _column_27,
+        _column_28,
+        _column_29,
+        _column_30,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape3 buddyLooks = Shape3(
+    source: i0.VersionedTable(
+      entityName: 'buddy_looks',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_31,
+        _column_32,
+        _column_33,
+        _column_34,
+        _column_35,
+        _column_36,
+        _column_37,
+        _column_38,
+        _column_39,
+        _column_40,
+        _column_41,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape5 settings = Shape5(
+    source: i0.VersionedTable(
+      entityName: 'settings',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_31,
+        _column_42,
+        _column_43,
+        _column_44,
+        _column_45,
+        _column_46,
+        _column_47,
+        _column_48,
+        _column_49,
+        _column_50,
+        _column_51,
+        _column_52,
+        _column_53,
+        _column_56,
+        _column_54,
+        _column_55,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  final i1.Index logEntriesAt = i1.Index(
+    'log_entries_at',
+    'CREATE INDEX log_entries_at ON log_entries (at)',
+  );
+  final i1.Index logEntriesReminderAt = i1.Index(
+    'log_entries_reminder_at',
+    'CREATE INDEX log_entries_reminder_at ON log_entries (reminder_id, at)',
+  );
+}
+
+class Shape5 extends i0.VersionedTable {
+  Shape5({required super.source, required super.alias}) : super.aliased();
+  i1.GeneratedColumn<int> get id =>
+      columnsByName['id']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get userName =>
+      columnsByName['user_name']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get buddySize =>
+      columnsByName['buddy_size']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get walkSpeed =>
+      columnsByName['walk_speed']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get walkEnabled =>
+      columnsByName['walk_enabled']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get buddyVisible =>
+      columnsByName['buddy_visible']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get soundEnabled =>
+      columnsByName['sound_enabled']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get snoozeMinutes =>
+      columnsByName['snooze_minutes']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get autoMissMinutes =>
+      columnsByName['auto_miss_minutes']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get doNotDisturb =>
+      columnsByName['do_not_disturb']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get themeMode =>
+      columnsByName['theme_mode']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get launchAtLogin =>
+      columnsByName['launch_at_login']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get focusPopups =>
+      columnsByName['focus_popups']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get buddyAlwaysOn =>
+      columnsByName['buddy_always_on']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<double> get buddyX =>
+      columnsByName['buddy_x']! as i1.GeneratedColumn<double>;
+  i1.GeneratedColumn<double> get buddyY =>
+      columnsByName['buddy_y']! as i1.GeneratedColumn<double>;
+}
+
+i1.GeneratedColumn<int> _column_56(String aliasedName) =>
+    i1.GeneratedColumn<int>(
+      'buddy_always_on',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.int,
+      $customConstraints:
+          'NOT NULL DEFAULT 0 CHECK (buddy_always_on IN (0, 1))',
+      defaultValue: const i1.CustomExpression('0'),
+    );
 i0.MigrationStepWithVersion migrationSteps({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
+  required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
 }) {
   return (currentVersion, database) async {
     switch (currentVersion) {
@@ -750,6 +935,11 @@ i0.MigrationStepWithVersion migrationSteps({
         final migrator = i1.Migrator(database, schema);
         await from1To2(migrator, schema);
         return 2;
+      case 2:
+        final schema = Schema3(database: database);
+        final migrator = i1.Migrator(database, schema);
+        await from2To3(migrator, schema);
+        return 3;
       default:
         throw ArgumentError.value('Unknown migration from $currentVersion');
     }
@@ -758,6 +948,7 @@ i0.MigrationStepWithVersion migrationSteps({
 
 i1.OnUpgrade stepByStep({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
+  required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
 }) => i0.VersionedSchema.stepByStepHelper(
-  step: migrationSteps(from1To2: from1To2),
+  step: migrationSteps(from1To2: from1To2, from2To3: from2To3),
 );

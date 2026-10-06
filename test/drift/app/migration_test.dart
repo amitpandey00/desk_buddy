@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'generated/schema.dart';
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
+import 'generated/schema_v3.dart' as v3;
 
 /// Guards the schema against accidental changes and, from v2 on, checks every
 /// migration step. When bumping `schemaVersion`:
@@ -30,7 +31,40 @@ void main() {
   );
 
   test('schema version matches the newest dumped schema', () {
-    expect(GeneratedHelper.versions.last, 2);
+    expect(GeneratedHelper.versions.last, 3);
+  });
+
+  test('v2 → v3 keeps settings and adds buddyAlwaysOn = false', () async {
+    await verifier.testWithDataIntegrity(
+      oldVersion: 2,
+      newVersion: 3,
+      createOld: v2.DatabaseAtV2.new,
+      createNew: v3.DatabaseAtV3.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.settings,
+          v2.SettingsCompanion.insert(
+            userName: 'Sam',
+            buddySize: 150,
+            walkSpeed: 60,
+            walkEnabled: 1,
+            buddyVisible: 1,
+            soundEnabled: 1,
+            snoozeMinutes: 10,
+            autoMissMinutes: 5,
+            doNotDisturb: 0,
+            themeMode: 'system',
+            launchAtLogin: 0,
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final s = await newDb.select(newDb.settings).getSingle();
+        expect(s.userName, 'Sam');
+        expect(s.buddyAlwaysOn, 0);
+      },
+    );
   });
 
   test('v1 → v2 keeps every row and adds focusPopups = false', () async {

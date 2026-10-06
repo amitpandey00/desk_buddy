@@ -119,6 +119,10 @@ class SettingsTable extends Table {
 
   /// Added in schema v2.
   BoolColumn get focusPopups => boolean().withDefault(const Constant(false))();
+
+  /// Added in schema v3.
+  BoolColumn get buddyAlwaysOn =>
+      boolean().withDefault(const Constant(false))();
   RealColumn get buddyX => real().nullable()();
   RealColumn get buddyY => real().nullable()();
 

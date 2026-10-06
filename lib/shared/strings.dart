@@ -50,6 +50,7 @@ abstract final class Strings {
   static const trayShowBuddy = 'Show Buddy';
   static const trayHideBuddy = 'Hide Buddy';
   static const trayDnd = 'Do Not Disturb';
+  static const trayAlwaysOn = 'Always on Screen';
   static String traySnoozeAll(int minutes) => 'Snooze all for $minutes min';
   static const trayQuit = 'Quit';
 
@@ -261,7 +262,11 @@ abstract final class Strings {
   static const setNameHint = 'Fills in {name} in messages';
   static const namePlaceholder = 'e.g. Sam';
   static const setShow = 'Show buddy';
-  static const setShowHint = 'Hide the character; reminders still run';
+  static const setShowHint =
+      'Off: no character at all; reminders come as notifications';
+  static const setAlways = 'Always on screen';
+  static const setAlwaysHint =
+      'Off: the buddy only appears when a reminder is due, then leaves';
   static const setWalk = 'Walk around';
   static const setWalkHint = 'Off keeps it where you put it';
   static const setSpeed = 'Walking speed';

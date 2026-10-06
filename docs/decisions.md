@@ -507,3 +507,15 @@ have regression tests; 231 tests now pass.
 - Strategy A's window, while showing a bubble, is about 334 × (buddy + 190)
   logical px and isn't click-through. For the length of an alert it
   swallows clicks around the buddy.
+
+## D35 — The buddy only appears for reminders by default (2026-10-07)
+
+The owner's first on-screen run: a buddy that's always walking is too
+present. New setting **Always on screen** (schema v3, `buddyAlwaysOn`,
+default **off**). When it's off, the overlay window is hidden and appears
+only while a pop-up (real or Test) is showing, then hides again after Done,
+Remind me later or auto-miss. It returns at its saved position. Turning it
+on restores the spec's always-walking buddy. The switch is in Settings and
+in the tray menu ("Always on Screen"). "Show buddy" off still means no
+character at all, with reminders as system notifications. Existing installs
+upgrade to off.

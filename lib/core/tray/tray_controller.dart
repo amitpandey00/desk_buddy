@@ -40,6 +40,7 @@ class TrayController with TrayListener {
     _sub = _data.settings.watch().listen((s) {
       final changed =
           s.buddyVisible != _settings.buddyVisible ||
+          s.buddyAlwaysOn != _settings.buddyAlwaysOn ||
           s.doNotDisturb != _settings.doNotDisturb;
       _settings = s;
       if (changed) unawaited(_rebuildMenu());
@@ -56,6 +57,11 @@ class TrayController with TrayListener {
           label: _settings.buddyVisible
               ? Strings.trayHideBuddy
               : Strings.trayShowBuddy,
+        ),
+        MenuItem.checkbox(
+          key: 'always',
+          label: Strings.trayAlwaysOn,
+          checked: _settings.buddyAlwaysOn,
         ),
         MenuItem.checkbox(
           key: 'dnd',
@@ -100,6 +106,9 @@ class TrayController with TrayListener {
       'open' => openDashboard(),
       'visible' => _data.settings.update(
         (s) => s.copyWith(buddyVisible: !s.buddyVisible),
+      ),
+      'always' => _data.settings.update(
+        (s) => s.copyWith(buddyAlwaysOn: !s.buddyAlwaysOn),
       ),
       'dnd' => _data.settings.update(
         (s) => s.copyWith(doNotDisturb: !s.doNotDisturb),

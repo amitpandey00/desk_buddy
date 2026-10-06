@@ -19,7 +19,9 @@ mixin _$AppSettings {
 /// Fills `{name}`.
  String get userName;/// Logical px wide, [sizeMin]–[sizeMax].
  int get buddySize;/// px per second, [speedMin]–[speedMax].
- int get walkSpeed; bool get walkEnabled; bool get buddyVisible; bool get soundEnabled;/// One of [snoozeOptions].
+ int get walkSpeed; bool get walkEnabled; bool get buddyVisible;/// Walk on screen all the time. Off (default): the buddy only appears
+/// while a reminder pop-up is showing, then leaves again.
+ bool get buddyAlwaysOn; bool get soundEnabled;/// One of [snoozeOptions].
  int get snoozeMinutes;/// One of [autoMissOptions].
  int get autoMissMinutes; bool get doNotDisturb; ThemePreference get themeMode; bool get launchAtLogin;/// Give a pop-up keyboard focus (so Enter answers it). Off by default:
 /// otherwise a reminder would grab the keys you're typing. Forced on
@@ -38,16 +40,16 @@ $AppSettingsCopyWith<AppSettings> get copyWith => _$AppSettingsCopyWithImpl<AppS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppSettings&&(identical(other.userName, userName) || other.userName == userName)&&(identical(other.buddySize, buddySize) || other.buddySize == buddySize)&&(identical(other.walkSpeed, walkSpeed) || other.walkSpeed == walkSpeed)&&(identical(other.walkEnabled, walkEnabled) || other.walkEnabled == walkEnabled)&&(identical(other.buddyVisible, buddyVisible) || other.buddyVisible == buddyVisible)&&(identical(other.soundEnabled, soundEnabled) || other.soundEnabled == soundEnabled)&&(identical(other.snoozeMinutes, snoozeMinutes) || other.snoozeMinutes == snoozeMinutes)&&(identical(other.autoMissMinutes, autoMissMinutes) || other.autoMissMinutes == autoMissMinutes)&&(identical(other.doNotDisturb, doNotDisturb) || other.doNotDisturb == doNotDisturb)&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.launchAtLogin, launchAtLogin) || other.launchAtLogin == launchAtLogin)&&(identical(other.focusPopups, focusPopups) || other.focusPopups == focusPopups)&&(identical(other.buddyX, buddyX) || other.buddyX == buddyX)&&(identical(other.buddyY, buddyY) || other.buddyY == buddyY));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppSettings&&(identical(other.userName, userName) || other.userName == userName)&&(identical(other.buddySize, buddySize) || other.buddySize == buddySize)&&(identical(other.walkSpeed, walkSpeed) || other.walkSpeed == walkSpeed)&&(identical(other.walkEnabled, walkEnabled) || other.walkEnabled == walkEnabled)&&(identical(other.buddyVisible, buddyVisible) || other.buddyVisible == buddyVisible)&&(identical(other.buddyAlwaysOn, buddyAlwaysOn) || other.buddyAlwaysOn == buddyAlwaysOn)&&(identical(other.soundEnabled, soundEnabled) || other.soundEnabled == soundEnabled)&&(identical(other.snoozeMinutes, snoozeMinutes) || other.snoozeMinutes == snoozeMinutes)&&(identical(other.autoMissMinutes, autoMissMinutes) || other.autoMissMinutes == autoMissMinutes)&&(identical(other.doNotDisturb, doNotDisturb) || other.doNotDisturb == doNotDisturb)&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.launchAtLogin, launchAtLogin) || other.launchAtLogin == launchAtLogin)&&(identical(other.focusPopups, focusPopups) || other.focusPopups == focusPopups)&&(identical(other.buddyX, buddyX) || other.buddyX == buddyX)&&(identical(other.buddyY, buddyY) || other.buddyY == buddyY));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,userName,buddySize,walkSpeed,walkEnabled,buddyVisible,soundEnabled,snoozeMinutes,autoMissMinutes,doNotDisturb,themeMode,launchAtLogin,focusPopups,buddyX,buddyY);
+int get hashCode => Object.hash(runtimeType,userName,buddySize,walkSpeed,walkEnabled,buddyVisible,buddyAlwaysOn,soundEnabled,snoozeMinutes,autoMissMinutes,doNotDisturb,themeMode,launchAtLogin,focusPopups,buddyX,buddyY);
 
 @override
 String toString() {
-  return 'AppSettings(userName: $userName, buddySize: $buddySize, walkSpeed: $walkSpeed, walkEnabled: $walkEnabled, buddyVisible: $buddyVisible, soundEnabled: $soundEnabled, snoozeMinutes: $snoozeMinutes, autoMissMinutes: $autoMissMinutes, doNotDisturb: $doNotDisturb, themeMode: $themeMode, launchAtLogin: $launchAtLogin, focusPopups: $focusPopups, buddyX: $buddyX, buddyY: $buddyY)';
+  return 'AppSettings(userName: $userName, buddySize: $buddySize, walkSpeed: $walkSpeed, walkEnabled: $walkEnabled, buddyVisible: $buddyVisible, buddyAlwaysOn: $buddyAlwaysOn, soundEnabled: $soundEnabled, snoozeMinutes: $snoozeMinutes, autoMissMinutes: $autoMissMinutes, doNotDisturb: $doNotDisturb, themeMode: $themeMode, launchAtLogin: $launchAtLogin, focusPopups: $focusPopups, buddyX: $buddyX, buddyY: $buddyY)';
 }
 
 
@@ -58,7 +60,7 @@ abstract mixin class $AppSettingsCopyWith<$Res>  {
   factory $AppSettingsCopyWith(AppSettings value, $Res Function(AppSettings) _then) = _$AppSettingsCopyWithImpl;
 @useResult
 $Res call({
- String userName, int buddySize, int walkSpeed, bool walkEnabled, bool buddyVisible, bool soundEnabled, int snoozeMinutes, int autoMissMinutes, bool doNotDisturb, ThemePreference themeMode, bool launchAtLogin, bool focusPopups, double? buddyX, double? buddyY
+ String userName, int buddySize, int walkSpeed, bool walkEnabled, bool buddyVisible, bool buddyAlwaysOn, bool soundEnabled, int snoozeMinutes, int autoMissMinutes, bool doNotDisturb, ThemePreference themeMode, bool launchAtLogin, bool focusPopups, double? buddyX, double? buddyY
 });
 
 
@@ -75,13 +77,14 @@ class _$AppSettingsCopyWithImpl<$Res>
 
 /// Create a copy of AppSettings
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userName = null,Object? buddySize = null,Object? walkSpeed = null,Object? walkEnabled = null,Object? buddyVisible = null,Object? soundEnabled = null,Object? snoozeMinutes = null,Object? autoMissMinutes = null,Object? doNotDisturb = null,Object? themeMode = null,Object? launchAtLogin = null,Object? focusPopups = null,Object? buddyX = freezed,Object? buddyY = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userName = null,Object? buddySize = null,Object? walkSpeed = null,Object? walkEnabled = null,Object? buddyVisible = null,Object? buddyAlwaysOn = null,Object? soundEnabled = null,Object? snoozeMinutes = null,Object? autoMissMinutes = null,Object? doNotDisturb = null,Object? themeMode = null,Object? launchAtLogin = null,Object? focusPopups = null,Object? buddyX = freezed,Object? buddyY = freezed,}) {
   return _then(AppSettings(
 userName: null == userName ? _self.userName : userName // ignore: cast_nullable_to_non_nullable
 as String,buddySize: null == buddySize ? _self.buddySize : buddySize // ignore: cast_nullable_to_non_nullable
 as int,walkSpeed: null == walkSpeed ? _self.walkSpeed : walkSpeed // ignore: cast_nullable_to_non_nullable
 as int,walkEnabled: null == walkEnabled ? _self.walkEnabled : walkEnabled // ignore: cast_nullable_to_non_nullable
 as bool,buddyVisible: null == buddyVisible ? _self.buddyVisible : buddyVisible // ignore: cast_nullable_to_non_nullable
+as bool,buddyAlwaysOn: null == buddyAlwaysOn ? _self.buddyAlwaysOn : buddyAlwaysOn // ignore: cast_nullable_to_non_nullable
 as bool,soundEnabled: null == soundEnabled ? _self.soundEnabled : soundEnabled // ignore: cast_nullable_to_non_nullable
 as bool,snoozeMinutes: null == snoozeMinutes ? _self.snoozeMinutes : snoozeMinutes // ignore: cast_nullable_to_non_nullable
 as int,autoMissMinutes: null == autoMissMinutes ? _self.autoMissMinutes : autoMissMinutes // ignore: cast_nullable_to_non_nullable
@@ -176,10 +179,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userName,  int buddySize,  int walkSpeed,  bool walkEnabled,  bool buddyVisible,  bool soundEnabled,  int snoozeMinutes,  int autoMissMinutes,  bool doNotDisturb,  ThemePreference themeMode,  bool launchAtLogin,  bool focusPopups,  double? buddyX,  double? buddyY)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userName,  int buddySize,  int walkSpeed,  bool walkEnabled,  bool buddyVisible,  bool buddyAlwaysOn,  bool soundEnabled,  int snoozeMinutes,  int autoMissMinutes,  bool doNotDisturb,  ThemePreference themeMode,  bool launchAtLogin,  bool focusPopups,  double? buddyX,  double? buddyY)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppSettings() when $default != null:
-return $default(_that.userName,_that.buddySize,_that.walkSpeed,_that.walkEnabled,_that.buddyVisible,_that.soundEnabled,_that.snoozeMinutes,_that.autoMissMinutes,_that.doNotDisturb,_that.themeMode,_that.launchAtLogin,_that.focusPopups,_that.buddyX,_that.buddyY);case _:
+return $default(_that.userName,_that.buddySize,_that.walkSpeed,_that.walkEnabled,_that.buddyVisible,_that.buddyAlwaysOn,_that.soundEnabled,_that.snoozeMinutes,_that.autoMissMinutes,_that.doNotDisturb,_that.themeMode,_that.launchAtLogin,_that.focusPopups,_that.buddyX,_that.buddyY);case _:
   return orElse();
 
 }
@@ -197,10 +200,10 @@ return $default(_that.userName,_that.buddySize,_that.walkSpeed,_that.walkEnabled
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userName,  int buddySize,  int walkSpeed,  bool walkEnabled,  bool buddyVisible,  bool soundEnabled,  int snoozeMinutes,  int autoMissMinutes,  bool doNotDisturb,  ThemePreference themeMode,  bool launchAtLogin,  bool focusPopups,  double? buddyX,  double? buddyY)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userName,  int buddySize,  int walkSpeed,  bool walkEnabled,  bool buddyVisible,  bool buddyAlwaysOn,  bool soundEnabled,  int snoozeMinutes,  int autoMissMinutes,  bool doNotDisturb,  ThemePreference themeMode,  bool launchAtLogin,  bool focusPopups,  double? buddyX,  double? buddyY)  $default,) {final _that = this;
 switch (_that) {
 case _AppSettings():
-return $default(_that.userName,_that.buddySize,_that.walkSpeed,_that.walkEnabled,_that.buddyVisible,_that.soundEnabled,_that.snoozeMinutes,_that.autoMissMinutes,_that.doNotDisturb,_that.themeMode,_that.launchAtLogin,_that.focusPopups,_that.buddyX,_that.buddyY);case _:
+return $default(_that.userName,_that.buddySize,_that.walkSpeed,_that.walkEnabled,_that.buddyVisible,_that.buddyAlwaysOn,_that.soundEnabled,_that.snoozeMinutes,_that.autoMissMinutes,_that.doNotDisturb,_that.themeMode,_that.launchAtLogin,_that.focusPopups,_that.buddyX,_that.buddyY);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -217,10 +220,10 @@ return $default(_that.userName,_that.buddySize,_that.walkSpeed,_that.walkEnabled
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userName,  int buddySize,  int walkSpeed,  bool walkEnabled,  bool buddyVisible,  bool soundEnabled,  int snoozeMinutes,  int autoMissMinutes,  bool doNotDisturb,  ThemePreference themeMode,  bool launchAtLogin,  bool focusPopups,  double? buddyX,  double? buddyY)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userName,  int buddySize,  int walkSpeed,  bool walkEnabled,  bool buddyVisible,  bool buddyAlwaysOn,  bool soundEnabled,  int snoozeMinutes,  int autoMissMinutes,  bool doNotDisturb,  ThemePreference themeMode,  bool launchAtLogin,  bool focusPopups,  double? buddyX,  double? buddyY)?  $default,) {final _that = this;
 switch (_that) {
 case _AppSettings() when $default != null:
-return $default(_that.userName,_that.buddySize,_that.walkSpeed,_that.walkEnabled,_that.buddyVisible,_that.soundEnabled,_that.snoozeMinutes,_that.autoMissMinutes,_that.doNotDisturb,_that.themeMode,_that.launchAtLogin,_that.focusPopups,_that.buddyX,_that.buddyY);case _:
+return $default(_that.userName,_that.buddySize,_that.walkSpeed,_that.walkEnabled,_that.buddyVisible,_that.buddyAlwaysOn,_that.soundEnabled,_that.snoozeMinutes,_that.autoMissMinutes,_that.doNotDisturb,_that.themeMode,_that.launchAtLogin,_that.focusPopups,_that.buddyX,_that.buddyY);case _:
   return null;
 
 }
@@ -232,7 +235,7 @@ return $default(_that.userName,_that.buddySize,_that.walkSpeed,_that.walkEnabled
 @JsonSerializable()
 
 class _AppSettings extends AppSettings {
-  const _AppSettings({this.userName = Strings.defaultUserName, this.buddySize = 120, this.walkSpeed = 45, this.walkEnabled = true, this.buddyVisible = true, this.soundEnabled = true, this.snoozeMinutes = 10, this.autoMissMinutes = 5, this.doNotDisturb = false, this.themeMode = ThemePreference.system, this.launchAtLogin = false, this.focusPopups = false, this.buddyX, this.buddyY}): super._();
+  const _AppSettings({this.userName = Strings.defaultUserName, this.buddySize = 120, this.walkSpeed = 45, this.walkEnabled = true, this.buddyVisible = true, this.buddyAlwaysOn = false, this.soundEnabled = true, this.snoozeMinutes = 10, this.autoMissMinutes = 5, this.doNotDisturb = false, this.themeMode = ThemePreference.system, this.launchAtLogin = false, this.focusPopups = false, this.buddyX, this.buddyY}): super._();
   factory _AppSettings.fromJson(Map<String, dynamic> json) => _$AppSettingsFromJson(json);
 
 /// Fills `{name}`.
@@ -243,6 +246,9 @@ class _AppSettings extends AppSettings {
 @override@JsonKey() final  int walkSpeed;
 @override@JsonKey() final  bool walkEnabled;
 @override@JsonKey() final  bool buddyVisible;
+/// Walk on screen all the time. Off (default): the buddy only appears
+/// while a reminder pop-up is showing, then leaves again.
+@override@JsonKey() final  bool buddyAlwaysOn;
 @override@JsonKey() final  bool soundEnabled;
 /// One of [snoozeOptions].
 @override@JsonKey() final  int snoozeMinutes;
@@ -272,16 +278,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppSettings&&(identical(other.userName, userName) || other.userName == userName)&&(identical(other.buddySize, buddySize) || other.buddySize == buddySize)&&(identical(other.walkSpeed, walkSpeed) || other.walkSpeed == walkSpeed)&&(identical(other.walkEnabled, walkEnabled) || other.walkEnabled == walkEnabled)&&(identical(other.buddyVisible, buddyVisible) || other.buddyVisible == buddyVisible)&&(identical(other.soundEnabled, soundEnabled) || other.soundEnabled == soundEnabled)&&(identical(other.snoozeMinutes, snoozeMinutes) || other.snoozeMinutes == snoozeMinutes)&&(identical(other.autoMissMinutes, autoMissMinutes) || other.autoMissMinutes == autoMissMinutes)&&(identical(other.doNotDisturb, doNotDisturb) || other.doNotDisturb == doNotDisturb)&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.launchAtLogin, launchAtLogin) || other.launchAtLogin == launchAtLogin)&&(identical(other.focusPopups, focusPopups) || other.focusPopups == focusPopups)&&(identical(other.buddyX, buddyX) || other.buddyX == buddyX)&&(identical(other.buddyY, buddyY) || other.buddyY == buddyY));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppSettings&&(identical(other.userName, userName) || other.userName == userName)&&(identical(other.buddySize, buddySize) || other.buddySize == buddySize)&&(identical(other.walkSpeed, walkSpeed) || other.walkSpeed == walkSpeed)&&(identical(other.walkEnabled, walkEnabled) || other.walkEnabled == walkEnabled)&&(identical(other.buddyVisible, buddyVisible) || other.buddyVisible == buddyVisible)&&(identical(other.buddyAlwaysOn, buddyAlwaysOn) || other.buddyAlwaysOn == buddyAlwaysOn)&&(identical(other.soundEnabled, soundEnabled) || other.soundEnabled == soundEnabled)&&(identical(other.snoozeMinutes, snoozeMinutes) || other.snoozeMinutes == snoozeMinutes)&&(identical(other.autoMissMinutes, autoMissMinutes) || other.autoMissMinutes == autoMissMinutes)&&(identical(other.doNotDisturb, doNotDisturb) || other.doNotDisturb == doNotDisturb)&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.launchAtLogin, launchAtLogin) || other.launchAtLogin == launchAtLogin)&&(identical(other.focusPopups, focusPopups) || other.focusPopups == focusPopups)&&(identical(other.buddyX, buddyX) || other.buddyX == buddyX)&&(identical(other.buddyY, buddyY) || other.buddyY == buddyY));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,userName,buddySize,walkSpeed,walkEnabled,buddyVisible,soundEnabled,snoozeMinutes,autoMissMinutes,doNotDisturb,themeMode,launchAtLogin,focusPopups,buddyX,buddyY);
+int get hashCode => Object.hash(runtimeType,userName,buddySize,walkSpeed,walkEnabled,buddyVisible,buddyAlwaysOn,soundEnabled,snoozeMinutes,autoMissMinutes,doNotDisturb,themeMode,launchAtLogin,focusPopups,buddyX,buddyY);
 
 @override
 String toString() {
-  return 'AppSettings(userName: $userName, buddySize: $buddySize, walkSpeed: $walkSpeed, walkEnabled: $walkEnabled, buddyVisible: $buddyVisible, soundEnabled: $soundEnabled, snoozeMinutes: $snoozeMinutes, autoMissMinutes: $autoMissMinutes, doNotDisturb: $doNotDisturb, themeMode: $themeMode, launchAtLogin: $launchAtLogin, focusPopups: $focusPopups, buddyX: $buddyX, buddyY: $buddyY)';
+  return 'AppSettings(userName: $userName, buddySize: $buddySize, walkSpeed: $walkSpeed, walkEnabled: $walkEnabled, buddyVisible: $buddyVisible, buddyAlwaysOn: $buddyAlwaysOn, soundEnabled: $soundEnabled, snoozeMinutes: $snoozeMinutes, autoMissMinutes: $autoMissMinutes, doNotDisturb: $doNotDisturb, themeMode: $themeMode, launchAtLogin: $launchAtLogin, focusPopups: $focusPopups, buddyX: $buddyX, buddyY: $buddyY)';
 }
 
 
@@ -292,7 +298,7 @@ abstract mixin class _$AppSettingsCopyWith<$Res> implements $AppSettingsCopyWith
   factory _$AppSettingsCopyWith(_AppSettings value, $Res Function(_AppSettings) _then) = __$AppSettingsCopyWithImpl;
 @override @useResult
 $Res call({
- String userName, int buddySize, int walkSpeed, bool walkEnabled, bool buddyVisible, bool soundEnabled, int snoozeMinutes, int autoMissMinutes, bool doNotDisturb, ThemePreference themeMode, bool launchAtLogin, bool focusPopups, double? buddyX, double? buddyY
+ String userName, int buddySize, int walkSpeed, bool walkEnabled, bool buddyVisible, bool buddyAlwaysOn, bool soundEnabled, int snoozeMinutes, int autoMissMinutes, bool doNotDisturb, ThemePreference themeMode, bool launchAtLogin, bool focusPopups, double? buddyX, double? buddyY
 });
 
 
@@ -309,13 +315,14 @@ class __$AppSettingsCopyWithImpl<$Res>
 
 /// Create a copy of AppSettings
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userName = null,Object? buddySize = null,Object? walkSpeed = null,Object? walkEnabled = null,Object? buddyVisible = null,Object? soundEnabled = null,Object? snoozeMinutes = null,Object? autoMissMinutes = null,Object? doNotDisturb = null,Object? themeMode = null,Object? launchAtLogin = null,Object? focusPopups = null,Object? buddyX = freezed,Object? buddyY = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userName = null,Object? buddySize = null,Object? walkSpeed = null,Object? walkEnabled = null,Object? buddyVisible = null,Object? buddyAlwaysOn = null,Object? soundEnabled = null,Object? snoozeMinutes = null,Object? autoMissMinutes = null,Object? doNotDisturb = null,Object? themeMode = null,Object? launchAtLogin = null,Object? focusPopups = null,Object? buddyX = freezed,Object? buddyY = freezed,}) {
   return _then(_AppSettings(
 userName: null == userName ? _self.userName : userName // ignore: cast_nullable_to_non_nullable
 as String,buddySize: null == buddySize ? _self.buddySize : buddySize // ignore: cast_nullable_to_non_nullable
 as int,walkSpeed: null == walkSpeed ? _self.walkSpeed : walkSpeed // ignore: cast_nullable_to_non_nullable
 as int,walkEnabled: null == walkEnabled ? _self.walkEnabled : walkEnabled // ignore: cast_nullable_to_non_nullable
 as bool,buddyVisible: null == buddyVisible ? _self.buddyVisible : buddyVisible // ignore: cast_nullable_to_non_nullable
+as bool,buddyAlwaysOn: null == buddyAlwaysOn ? _self.buddyAlwaysOn : buddyAlwaysOn // ignore: cast_nullable_to_non_nullable
 as bool,soundEnabled: null == soundEnabled ? _self.soundEnabled : soundEnabled // ignore: cast_nullable_to_non_nullable
 as bool,snoozeMinutes: null == snoozeMinutes ? _self.snoozeMinutes : snoozeMinutes // ignore: cast_nullable_to_non_nullable
 as int,autoMissMinutes: null == autoMissMinutes ? _self.autoMissMinutes : autoMissMinutes // ignore: cast_nullable_to_non_nullable

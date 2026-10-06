@@ -74,6 +74,15 @@ class SettingsPage extends ConsumerWidget {
                     ),
                   ),
                   _Row(
+                    Strings.setAlways,
+                    Strings.setAlwaysHint,
+                    toggle(
+                      value: s.buddyAlwaysOn,
+                      onChanged: (v) =>
+                          update((x) => x.copyWith(buddyAlwaysOn: v)),
+                    ),
+                  ),
+                  _Row(
                     Strings.setWalk,
                     Strings.setWalkHint,
                     toggle(

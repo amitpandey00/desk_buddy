@@ -20,6 +20,10 @@ abstract class AppSettings with _$AppSettings {
     @Default(45) int walkSpeed,
     @Default(true) bool walkEnabled,
     @Default(true) bool buddyVisible,
+
+    /// Walk on screen all the time. Off (default): the buddy only appears
+    /// while a reminder pop-up is showing, then leaves again.
+    @Default(false) bool buddyAlwaysOn,
     @Default(true) bool soundEnabled,
 
     /// One of [snoozeOptions].

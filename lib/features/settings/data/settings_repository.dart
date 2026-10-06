@@ -127,6 +127,7 @@ class SettingsRepository {
     themeMode: r.themeMode,
     launchAtLogin: r.launchAtLogin,
     focusPopups: r.focusPopups,
+    buddyAlwaysOn: r.buddyAlwaysOn,
     buddyX: r.buddyX,
     buddyY: r.buddyY,
   );
@@ -145,6 +146,7 @@ class SettingsRepository {
     themeMode: s.themeMode,
     launchAtLogin: s.launchAtLogin,
     focusPopups: s.focusPopups,
+    buddyAlwaysOn: s.buddyAlwaysOn,
     buddyX: s.buddyX,
     buddyY: s.buddyY,
   );

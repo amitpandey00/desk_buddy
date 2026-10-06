@@ -101,7 +101,25 @@ class _SpikeAppState extends State<SpikeApp>
   bool _screenReader = false;
   bool _focusRequested = false;
 
-  bool get _visible => _settings.buddyVisible;
+  /// Whether the buddy is on screen right now. With "Always on screen" off
+  /// (the default) it only appears while a pop-up is showing; benchmarks
+  /// always show it.
+  bool get _visible =>
+      _settings.buddyVisible &&
+      (_settings.buddyAlwaysOn || _alert != null || _benchSeconds > 0);
+
+  /// What the native window was last told (null = not yet).
+  bool? _windowShown;
+
+  /// Shows or hides the overlay window to match [_visible].
+  Future<void> _applyVisibility() async {
+    final want = _visible;
+    if (want == _windowShown) return;
+    _windowShown = want;
+    await native.setVisible(visible: want);
+    if (want) _startTicker();
+  }
+
   Duration _last = Duration.zero;
   Timer? _resumeWalk;
 
@@ -249,7 +267,7 @@ class _SpikeAppState extends State<SpikeApp>
       ..add(widget.scheduler.alerts.listen(_onAlert));
     // A reminder overdue at launch may have popped before we listened.
     if (widget.scheduler.current != null) _onAlert(widget.scheduler.current);
-    await native.setVisible(visible: _settings.buddyVisible);
+    await _applyVisibility();
     setState(() {});
     _startTicker();
     if (_benchSeconds > 0) unawaited(_runBench());
@@ -455,6 +473,9 @@ class _SpikeAppState extends State<SpikeApp>
 
   void _onAlert(AlertView? alert) {
     _alert = alert;
+    // Appears for the pop-up (if it isn't always on screen) and leaves
+    // again once it's answered or missed.
+    unawaited(_applyVisibility());
     if (alert != null) {
       _show(_Bubble.alert);
       // Keyboard / screen-reader users need the pop-up focused; everyone
@@ -477,15 +498,10 @@ class _SpikeAppState extends State<SpikeApp>
   Future<void> _onSettings(AppSettings s) async {
     final old = _settings;
     setState(() => _settings = s);
-    if (old.buddyVisible != s.buddyVisible) {
-      await native.setVisible(visible: s.buddyVisible);
-    }
+    await _applyVisibility();
     _clamp();
     _sync();
-    if ((s.walkEnabled && !old.walkEnabled) ||
-        (s.buddyVisible && !old.buddyVisible)) {
-      _startTicker();
-    }
+    if (s.walkEnabled && !old.walkEnabled) _startTicker();
   }
 
   void _show(_Bubble b) {
