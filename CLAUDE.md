@@ -7,8 +7,16 @@ Decisions: `docs/decisions.md`. Status: `docs/progress.md`.
 
 ## Development & review rules (owner's, apply to every change)
 
+- **Never commit or push directly to `main`.** Every feature, fix,
+  refactor or change gets its own branch with a clear, descriptive name
+  (`feature/…`, `fix/…`, `refactor/…`, `chore/…`), and reaches `main` only
+  through a reviewed merge / pull request.
+- Every branch carries a clear description: **what** changed, **why**, and
+  **how it was tested**. It's used as the PR description; the commit message
+  gives the short form.
 - Never commit or push without testing **and** reviewing the change (run the
-  `desk-buddy-review` skill). Push only when asked.
+  `desk-buddy-review` skill). Push only when asked. Fix all review issues
+  before merging.
 - Follow the existing architecture, patterns and conventions; reuse existing
   code instead of duplicating code, files or logic.
 - No unused code, files, imports, variables or dependencies; no

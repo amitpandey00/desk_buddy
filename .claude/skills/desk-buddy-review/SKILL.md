@@ -25,7 +25,14 @@ git status --short              # generated files changed after build? → stale
 ```
 
 Never commit or push until all gates pass and the review's findings are
-fixed (owner's rule, see CLAUDE.md).
+fixed (owner's rule, see CLAUDE.md). Also check the git rules:
+
+- The change is on its own descriptively named branch (`feature/`, `fix/`,
+  `refactor/`, `chore/`), never on `main`. Report `git branch --show-current`.
+- The branch has a description with three parts: **what** changed, **why**,
+  and **how it was tested**. List the gates you ran and the hand checks.
+- One change per branch: unrelated edits found during review go on their
+  own branch.
 
 ## 1b. Owner's quality rules (check every change)
 
