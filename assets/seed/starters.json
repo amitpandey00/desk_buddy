@@ -1,0 +1,44 @@
+[
+  {
+    "title": "Drink water", "emoji": "💧", "category": "Health",
+    "messageTemplate": "Hey, {name}! Did you drink water?",
+    "scheduleType": "interval", "everyMinutes": 60, "activeFrom": "08:00", "activeTo": "22:00",
+    "dailyGoal": 8, "goalUnit": "glasses", "propId": "bottle", "doneLabel": "Yes!"
+  },
+  {
+    "title": "Evening meeting", "emoji": "📅", "category": "Work",
+    "messageTemplate": "Hey, {name}! Your 7 PM meeting is starting.",
+    "scheduleType": "daily", "timeOfDay": "19:00", "daysOfWeek": [1, 2, 3, 4, 5],
+    "dailyGoal": 0, "goalUnit": "", "propId": "phone", "doneLabel": "Joining"
+  },
+  {
+    "title": "Stretch break", "emoji": "🧘", "category": "Breaks",
+    "messageTemplate": "Stand up and stretch, {name}!",
+    "scheduleType": "interval", "everyMinutes": 45, "activeFrom": "10:00", "activeTo": "19:00",
+    "dailyGoal": 6, "goalUnit": "stretches", "propId": "none", "doneLabel": "Done"
+  },
+  {
+    "title": "Eye break", "emoji": "👀", "category": "Breaks",
+    "messageTemplate": "Look 20 feet away for 20 seconds.",
+    "scheduleType": "interval", "everyMinutes": 20, "activeFrom": "09:00", "activeTo": "19:00",
+    "dailyGoal": 0, "goalUnit": "", "propId": "none", "doneLabel": "Done"
+  },
+  {
+    "title": "Read 10 pages", "emoji": "📖", "category": "Personal",
+    "messageTemplate": "{name}, reading time! {count}/{goal} {unit} today.",
+    "scheduleType": "daily", "timeOfDay": "21:30", "daysOfWeek": [],
+    "dailyGoal": 1, "goalUnit": "sessions", "propId": "book", "doneLabel": "Reading"
+  },
+  {
+    "title": "Take vitamins", "emoji": "💊", "category": "Health",
+    "messageTemplate": "Time for your vitamins, {name}.",
+    "scheduleType": "daily", "timeOfDay": "09:00", "daysOfWeek": [],
+    "dailyGoal": 1, "goalUnit": "doses", "propId": "pill", "doneLabel": "Taken"
+  },
+  {
+    "title": "Workout", "emoji": "🏋️", "category": "Health",
+    "messageTemplate": "Workout o'clock, {name}!",
+    "scheduleType": "daily", "timeOfDay": "18:00", "daysOfWeek": [1, 3, 5],
+    "dailyGoal": 0, "goalUnit": "", "propId": "dumbbell", "doneLabel": "Let's go"
+  }
+]

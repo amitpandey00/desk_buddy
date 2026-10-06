@@ -1,0 +1,7 @@
+include: ../analysis_options.yaml
+
+linter:
+  rules:
+    # Tests read as step-by-step scripts (`h.tick(); h.send(); expect()`);
+    # folding them into cascades hides the sequence.
+    cascade_invocations: false

@@ -1,0 +1,6 @@
+[
+  { "name": "Health",   "emoji": "💚", "colorHex": "#1FA97F" },
+  { "name": "Work",     "emoji": "💼", "colorHex": "#F0A020" },
+  { "name": "Breaks",   "emoji": "☕", "colorHex": "#2F7DE1" },
+  { "name": "Personal", "emoji": "✨", "colorHex": "#8B5CF6" }
+]
