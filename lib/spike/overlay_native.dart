@@ -95,9 +95,6 @@ class OverlayNative {
     );
   }
 
-  Future<Rect> windowRect() async =>
-      _rect(await _call<List<Object?>>('getWindowRect'));
-
   Future<void> setFrame({Offset? position, Size? size}) =>
       _call<void>('setFrame', {
         if (position != null) ...{
@@ -109,8 +106,6 @@ class OverlayNative {
           'h': size.height.round(),
         },
       });
-
-  Future<void> raise() => _call<void>('raise');
 
   /// OS accessibility state: (reduce motion, screen reader running).
   Future<({bool reduceMotion, bool screenReader})> accessibility() async {

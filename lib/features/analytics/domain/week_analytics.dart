@@ -9,9 +9,9 @@ class ReminderStats {
     this.reminder,
     this.done,
     this.snoozed,
-    this.missed, {
-    this.skipped = 0,
-  });
+    this.skipped,
+    this.missed,
+  );
 
   final Reminder reminder;
   final int done;
@@ -113,8 +113,8 @@ class WeekAnalytics {
             r,
             count(LogAction.done),
             count(LogAction.snoozed),
+            count(LogAction.skipped),
             count(LogAction.missed),
-            skipped: count(LogAction.skipped),
           );
         }(),
     ];

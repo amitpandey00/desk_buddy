@@ -5,6 +5,24 @@ window) plus a dashboard window. Spec: `docs/spec.md`. Behavioral reference:
 `docs/prototype.html` (spec wins on conflict). Plan: `docs/plan.md`.
 Decisions: `docs/decisions.md`. Status: `docs/progress.md`.
 
+## Development & review rules (owner's, apply to every change)
+
+- Never commit or push without testing **and** reviewing the change (run the
+  `desk-buddy-review` skill). Push only when asked.
+- Follow the existing architecture, patterns and conventions; reuse existing
+  code instead of duplicating code, files or logic.
+- No unused code, files, imports, variables or dependencies; no
+  over-engineering: implement only what is required.
+- Clear, consistent, meaningful names; simple, readable code any developer
+  can follow.
+- Before committing, verify all of these:
+  - `flutter analyze` is clean.
+  - `flutter test` passes.
+  - `flutter build windows --debug` succeeds.
+  - No regressions, duplicates or leftovers.
+- Review for correctness, readability, maintainability, performance,
+  security and consistency. Fix findings before committing.
+
 ## Hard rules (enforced by `test/guards/project_rules_test.dart`)
 
 - **Nothing is hardcoded to a specific reminder.** Behavior comes from data

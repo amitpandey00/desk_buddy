@@ -22,7 +22,7 @@ Decision: the Windows runner exposes a small `desk_buddy/overlay` channel
 (`windows/runner/overlay_channel.cpp`) that works in physical pixels:
 `getDisplays` (bounds, work area, scale), `getCursor` (+ button state),
 `setFrame` (`SWP_NOACTIVATE | SWP_NOZORDER`), `setClickThrough`,
-`setHitRegion`, `raise`, `cpuTimes`, and a `displaysChanged` event (on
+`setHitRegion`, `cpuTimes`, and a `displaysChanged` event (on
 WM_DISPLAYCHANGE, WM_DPICHANGED, and WM_SETTINGCHANGE/SPI_SETWORKAREA, which
 covers taskbar moves). window_manager stays for the dashboard window and
 macOS.

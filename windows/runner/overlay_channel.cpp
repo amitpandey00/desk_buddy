@@ -154,10 +154,6 @@ void OverlayChannel::HandleCall(
     result->Success(EncodableValue(EncodableList{
         EncodableValue(static_cast<int64_t>(p.x)),
         EncodableValue(static_cast<int64_t>(p.y)), EncodableValue(down)}));
-  } else if (name == "getWindowRect") {
-    RECT r;
-    GetWindowRect(window_, &r);
-    result->Success(RectValue(r));
   } else if (name == "setFrame") {
     const auto* x = Arg(args, "x");
     const auto* y = Arg(args, "y");
@@ -212,10 +208,6 @@ void OverlayChannel::HandleCall(
       SetForegroundWindow(previous_foreground_);
     }
     previous_foreground_ = nullptr;
-    result->Success();
-  } else if (name == "raise") {
-    SetWindowPos(window_, HWND_TOPMOST, 0, 0, 0, 0,
-                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     result->Success();
   } else if (name == "setClickThrough") {
     const auto* enabled = Arg(args, "enabled");

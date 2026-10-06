@@ -144,8 +144,6 @@ final class OverlayChannel {
         Int(p.x), Int(primaryTop - p.y), NSEvent.pressedMouseButtons & 1 == 1,
       ]
       result(cursor)
-    case "getWindowRect":
-      result(flip(window.frame))
     case "setFrame":
       let current = window.frame
       let w = (args["w"] as? NSNumber).map { CGFloat(truncating: $0) } ?? current.width
@@ -156,9 +154,6 @@ final class OverlayChannel {
       window.setFrame(
         NSRect(x: x, y: primaryTop - top - h, width: w, height: h),
         display: true, animate: false)
-      result(nil)
-    case "raise":
-      window.orderFrontRegardless()
       result(nil)
     case "setVisible":
       if args["visible"] as? Bool ?? true {

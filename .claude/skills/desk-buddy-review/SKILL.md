@@ -20,8 +20,26 @@ result). Rank most severe first. Style nits only if they break a rule below.
 flutter analyze                 # must be "No issues found!"
 flutter test                    # all green; note the count
 dart run build_runner build     # generated code must be up to date
+flutter build windows --debug   # native code must compile (Windows)
 git status --short              # generated files changed after build? → stale
 ```
+
+Never commit or push until all gates pass and the review's findings are
+fixed (owner's rule, see CLAUDE.md).
+
+## 1b. Owner's quality rules (check every change)
+
+- **Reuse, don't duplicate:** an existing helper, widget, repository method
+  or string should be used, never a near-copy of it.
+- **Nothing unused:** check new and touched code for unused imports, fields,
+  methods, native channel methods, strings, assets and dependencies. The
+  analyzer only catches unused *private* members, so grep for public ones.
+- **No over-engineering:** only what the request needs; no speculative
+  options, layers or parameters.
+- **Naming and readability:** clear, consistent names that match the
+  surrounding code; simple code a new developer can follow.
+- **Also review:** performance (rebuilds, timers, per-frame work) and
+  security (no secrets, safe file handling on import/export).
 
 ## 2. Hard rules (each is a bug if broken)
 
