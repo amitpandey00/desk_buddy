@@ -47,7 +47,8 @@ final class ConfigChanged extends SchedulerEvent {
   final SchedulerConfig config;
 }
 
-/// The user answered the pop-up: [LogAction.done] or [LogAction.snoozed].
+/// The user answered the pop-up: [LogAction.done], [LogAction.snoozed] or
+/// [LogAction.skipped] ("No": logged, then on to the next normal time).
 final class Respond extends SchedulerEvent {
   const Respond(this.action, super.now, {this.firedAt})
     : assert(action != LogAction.missed, 'missed is decided by the scheduler');

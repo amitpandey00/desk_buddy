@@ -92,6 +92,11 @@ class StatusTag extends StatelessWidget {
               const Color(0xFF9A6B00),
               c.sun.withValues(alpha: .3),
             ),
+            LogAction.skipped => (
+              Strings.tagSkipped,
+              c.muted,
+              c.muted.withValues(alpha: .16),
+            ),
             LogAction.missed => (
               Strings.tagMissed,
               c.coral,

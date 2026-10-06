@@ -87,6 +87,11 @@ final Path _beanie = svgPath('M34 38 Q34 9 60 9 Q86 9 86 38Z');
 final Path _brows = svgPath('M46 40 Q51 37 56 40 M64 40 Q69 37 74 40');
 final Path _smile = svgPath('M51 58 Q60 67 69 58');
 
+// Sad face: brows raised in the middle, a frown, and a tear.
+final Path _browsSad = svgPath('M46 41 Q51 38 56 37 M64 37 Q69 38 74 41');
+final Path _frown = svgPath('M52 63 Q60 56 68 63');
+final Path _tear = svgPath('M49 53 Q46.5 57.5 49 59 Q51.5 57.5 49 53Z');
+
 const _ink = Color(0xFF1C2733);
 const _white = Color(0xFFFFFFFF);
 
@@ -178,7 +183,7 @@ class BuddyPainter extends CustomPainter {
         canvas.drawCircle(const Offset(60, 9), 6, _fill(c.shirt));
     }
     canvas
-      ..drawPath(_brows, _line(c.brows, 2.4))
+      ..drawPath(p.frown > .5 ? _browsSad : _brows, _line(c.brows, 2.4))
       // Eyes (blink scales them about their center line).
       ..save()
       ..translate(60, 48)
@@ -197,11 +202,15 @@ class BuddyPainter extends CustomPainter {
         ..drawRRect(_r(62, 42, 15, 12, 4), g)
         ..drawLine(const Offset(58, 47), const Offset(62, 47), g);
     }
-    const cheek = Color.fromRGBO(255, 138, 128, .35);
+    final sad = p.frown > .5;
+    final cheek = Color.fromRGBO(255, 138, 128, sad ? .18 : .35);
     canvas
       ..drawCircle(const Offset(45, 57), 4, _fill(cheek))
       ..drawCircle(const Offset(75, 57), 4, _fill(cheek))
-      ..drawPath(_smile, _line(const Color(0xFF6B2F1D), 2.6));
+      ..drawPath(sad ? _frown : _smile, _line(const Color(0xFF6B2F1D), 2.6));
+    if (sad) {
+      canvas.drawPath(_tear, _fill(const Color.fromRGBO(120, 190, 255, .9)));
+    }
 
     // Front arm with the prop, hand on top.
     _rrect(canvas, 29, 78, 12, 46, 6, c.jacket);

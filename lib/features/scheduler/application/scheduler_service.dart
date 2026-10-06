@@ -173,6 +173,7 @@ class SchedulerService {
       await _notifier.show(
         view,
         onDone: () => respond(LogAction.done, firedAt: view.firedAt),
+        onSkip: () => respond(LogAction.skipped, firedAt: view.firedAt),
         onSnooze: () => respond(LogAction.snoozed, firedAt: view.firedAt),
       );
     }

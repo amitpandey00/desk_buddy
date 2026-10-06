@@ -60,11 +60,23 @@ void main() {
     });
   });
 
+  test('sad: slumped, droopy eyes, frowning, still blinking', () {
+    final p = poseAt(BuddyState.sad, 1);
+    expect(p.frown, 1);
+    expect(p.bodyDy, greaterThan(2.4), reason: 'lower than standing');
+    expect(p.eyeScaleY, closeTo(.7, 1e-9));
+    expect(poseAt(BuddyState.sad, 4.5 * .96).eyeScaleY, closeTo(.07, 1e-9));
+    expect(poseAt(BuddyState.idle, 1).frown, 0);
+    expect(poseAt(BuddyState.sad, 1, reduceMotion: true).frown, 1);
+  });
+
   test('eyes blink near the end of every 4.5 s, in every state', () {
     for (final s in BuddyState.values) {
-      expect(poseAt(s, 1).eyeScaleY, 1);
-      expect(poseAt(s, 4.5 * .96).eyeScaleY, closeTo(.1, 1e-9));
-      expect(poseAt(s, 4.5 + 1).eyeScaleY, 1);
+      // Sad eyes are half-lidded; the blink is relative to how open they are.
+      final open = poseAt(s, 1).eyeScaleY;
+      expect(open, s == BuddyState.sad ? .7 : 1);
+      expect(poseAt(s, 4.5 * .96).eyeScaleY, closeTo(open * .1, 1e-9));
+      expect(poseAt(s, 4.5 + 1).eyeScaleY, open);
     }
   });
 

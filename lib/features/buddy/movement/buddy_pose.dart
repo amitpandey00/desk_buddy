@@ -1,7 +1,8 @@
 import 'dart:math';
 
 /// What the buddy is doing. Drives both movement and limb animation.
-enum BuddyState { walking, idle, alert, dragging }
+/// `sad` is the brief reaction after the user answers a pop-up with "No".
+enum BuddyState { walking, idle, alert, dragging, sad }
 
 /// Joint angles (radians, clockwise-positive like the canvas) and offsets
 /// (design px, in the 120×222 space) for one frame.
@@ -12,6 +13,7 @@ class BuddyPose {
     this.armBack = 0,
     this.bodyDy = 0,
     this.eyeScaleY = 1,
+    this.frown = 0,
   });
 
   /// The left (`leg l`) and right (`leg r`) legs of the prototype.
@@ -26,6 +28,9 @@ class BuddyPose {
 
   /// 1 = open, 0.1 = mid-blink.
   final double eyeScaleY;
+
+  /// 0 = the usual smile, 1 = sad face (frown, tilted brows, a tear).
+  final double frown;
 
   static const rest = BuddyPose();
 
@@ -67,9 +72,11 @@ double _blink(double t) {
 /// alert keeps the arm raised so it still reads as "hey!".
 BuddyPose poseAt(BuddyState state, double t, {bool reduceMotion = false}) {
   if (reduceMotion) {
-    return state == BuddyState.alert
-        ? const BuddyPose(armBack: -145 * _deg)
-        : BuddyPose.rest;
+    return switch (state) {
+      BuddyState.alert => const BuddyPose(armBack: -145 * _deg),
+      BuddyState.sad => const BuddyPose(bodyDy: 2.5, eyeScaleY: .7, frown: 1),
+      _ => BuddyPose.rest,
+    };
   }
   final eyes = _blink(t);
   switch (state) {
@@ -87,6 +94,14 @@ BuddyPose poseAt(BuddyState state, double t, {bool reduceMotion = false}) {
         // 0 → -1.5 px at 50% → 0.
         bodyDy: -1.5 * (1 - cos(2 * pi * t / 2.4)) / 2,
         eyeScaleY: eyes,
+      );
+    case BuddyState.sad:
+      // Slumped a little lower, slow heavy breathing, droopy eyes.
+      return BuddyPose(
+        armBack: 4 * _deg,
+        bodyDy: 2.5 + .6 * (1 - cos(2 * pi * t / 3.2)) / 2,
+        eyeScaleY: .7 * eyes,
+        frown: 1,
       );
     case BuddyState.alert:
       final p = (t % .9) / .9;

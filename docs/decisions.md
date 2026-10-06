@@ -519,3 +519,20 @@ on restores the spec's always-walking buddy. The switch is in Settings and
 in the tray menu ("Always on Screen"). "Show buddy" off still means no
 character at all, with reminders as system notifications. Existing installs
 upgrade to off.
+
+## D36 — "No" button and the sad reaction (2026-10-07)
+
+Owner request. Pop-ups (and the Windows toast) now have three answers: the
+reminder's done label, **No**, and Remind me in N min.
+- "No" logs a new action **skipped**: "I didn't do it", which isn't the
+  same as *missed* (never answered). The reminder then goes to its next
+  normal time, not a snooze. A one-off switches itself off. Stored as text,
+  so no schema change; older backups import unchanged.
+- Analytics: skipped answers count as pop-up responses that weren't done,
+  so they lower the completion rate. They get their own "Said no" column
+  and KPI count, and a "said no" tag in Today.
+- The buddy reacts with a new `BuddyState.sad` for about 3.2 s: slumped
+  2.5 px, slow 3.2 s breathing, eyes at 70%, brows raised in the middle, a
+  frown and a tear, and a compact "😢 Oh… okay. Next time!" bubble. It then
+  leaves, unless "Always on screen" is on. Reduce motion keeps the sad face
+  without the breathing. The Rive contract gains the `sad` state.

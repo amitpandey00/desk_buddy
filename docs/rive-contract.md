@@ -34,7 +34,7 @@ doesn't have is skipped, so a simpler first version still works.
 
 | Property | Type | Values / meaning |
 |---|---|---|
-| `state` | enum | `walking`, `idle`, `alert`, `dragging` |
+| `state` | enum | `walking`, `idle`, `alert`, `dragging`, `sad` |
 | `flip` | boolean | `true` while walking left. Mirror the character only; the speech bubble is drawn by the app and never flips |
 | `reduceMotion` | boolean | `true` = no looping animation (OS "reduce motion"). Hold a still pose; in `alert`, keep the arm raised so it still reads as "hey!" |
 
@@ -47,6 +47,7 @@ What each state should look like (matching the painter, see
 | `idle` | Breathing: body rises 1.5 px and back over 2.4 s |
 | `alert` | Hop 9 px at 30% of a 0.9 s cycle (down by 60%, rest until 100%); back arm waves between −165° and −125° |
 | `dragging` | Same as idle (the app moves the buddy; feel free to add a "lifted" pose) |
+| `sad` | ~3 s after the user answers "No": slumped 2.5 px lower, slow breathing (3.2 s), half-closed eyes, brows raised in the middle, a frown and a tear |
 | all | Blink every 4.5 s: eyes squash to 10% height at 94–100% of the cycle |
 
 Transitions between states may blend (≤150 ms). The app changes `state`
@@ -71,7 +72,7 @@ The art itself must not assume what any reminder is about.
 ## Checklist before handing over
 
 - [ ] Artboard `Buddy` 120×222, state machine `Main`, default view model instance exported
-- [ ] All four states animate as described; blink in every state
+- [ ] All five states animate as described; blink in every state
 - [ ] `flip` mirrors the character around its center
 - [ ] `reduceMotion` freezes every loop
 - [ ] Six colors recolor every matching part, including the derived shades

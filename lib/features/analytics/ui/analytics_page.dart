@@ -83,7 +83,7 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
               ),
               _Kpi(
                 '${a.done}',
-                Strings.kpiCompleted(a.snoozed, a.missed),
+                Strings.kpiCompleted(a.snoozed, a.skipped, a.missed),
               ),
             ];
             return c.maxWidth < 640
@@ -475,6 +475,7 @@ class _ByReminder extends StatelessWidget {
           DataColumn(label: Text(Strings.colReminder)),
           DataColumn(label: Text(Strings.colDone), numeric: true),
           DataColumn(label: Text(Strings.colSnoozed), numeric: true),
+          DataColumn(label: Text(Strings.colSkipped), numeric: true),
           DataColumn(label: Text(Strings.colMissed), numeric: true),
           DataColumn(label: Text(Strings.colCompletion), numeric: true),
         ],
@@ -485,6 +486,7 @@ class _ByReminder extends StatelessWidget {
                 DataCell(Text('${s.reminder.emoji} ${s.reminder.title}')),
                 num('${s.done}'),
                 num('${s.snoozed}'),
+                num('${s.skipped}'),
                 num('${s.missed}'),
                 num(
                   s.completionPercent == null

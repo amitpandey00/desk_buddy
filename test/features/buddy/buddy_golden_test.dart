@@ -48,11 +48,12 @@ void main() {
     'walk': poseAt(BuddyState.walking, .1),
     'alert': poseAt(BuddyState.alert, .27),
     'blink': poseAt(BuddyState.idle, 4.5 * .96),
+    'sad': poseAt(BuddyState.sad, 1),
   };
 
   testWidgets('looks × poses', (tester) async {
     tester.view
-      ..physicalSize = const Size(4 * 136.0, 4 * 238.0)
+      ..physicalSize = const Size(5 * 136.0, 4 * 238.0)
       ..devicePixelRatio = 1;
     addTearDown(tester.view.reset);
     await tester.pumpWidget(

@@ -16,17 +16,25 @@ class LocalNotifierAlerts implements AlertNotifier {
   Future<void> show(
     AlertView alert, {
     required void Function() onDone,
+    required void Function() onSkip,
     required void Function() onSnooze,
   }) async {
     await dismiss();
-    final n = LocalNotification(
-      title: '${alert.emoji} ${alert.reminder.title}',
-      body: [alert.message, ?alert.progress].join('\n'),
-      actions: [
-        LocalNotificationAction(text: alert.doneLabel),
-        LocalNotificationAction(text: alert.snoozeLabel),
-      ],
-    )..onClickAction = (i) => i == 0 ? onDone() : onSnooze();
+    final n =
+        LocalNotification(
+            title: '${alert.emoji} ${alert.reminder.title}',
+            body: [alert.message, ?alert.progress].join('\n'),
+            actions: [
+              LocalNotificationAction(text: alert.doneLabel),
+              LocalNotificationAction(text: alert.skipLabel),
+              LocalNotificationAction(text: alert.snoozeLabel),
+            ],
+          )
+          ..onClickAction = (i) => switch (i) {
+            0 => onDone(),
+            1 => onSkip(),
+            _ => onSnooze(),
+          };
     _shown = n;
     await n.show(); // may throw (notifications off): the scheduler reports it
   }

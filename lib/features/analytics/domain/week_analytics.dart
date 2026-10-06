@@ -5,16 +5,25 @@ import 'package:desk_buddy/features/scheduler/engine/wall_clock.dart';
 
 /// One row of the "By reminder" table.
 class ReminderStats {
-  const ReminderStats(this.reminder, this.done, this.snoozed, this.missed);
+  const ReminderStats(
+    this.reminder,
+    this.done,
+    this.snoozed,
+    this.missed, {
+    this.skipped = 0,
+  });
 
   final Reminder reminder;
   final int done;
   final int snoozed;
   final int missed;
 
+  /// Answered "No".
+  final int skipped;
+
   /// Done ÷ pop-up responses, or null when it never popped up.
   int? get completionPercent {
-    final n = done + snoozed + missed;
+    final n = done + snoozed + skipped + missed;
     return n == 0 ? null : (done * 100 / n).round();
   }
 }
@@ -28,6 +37,7 @@ class WeekAnalytics {
     required this.done,
     required this.snoozed,
     required this.missed,
+    required this.skipped,
     required this.completionPercent,
     required this.averageResponseSeconds,
     required this.completedByHour,
@@ -61,6 +71,7 @@ class WeekAnalytics {
     var done = 0;
     var snoozed = 0;
     var missed = 0;
+    var skipped = 0;
     var popupResponses = 0;
     var popupDone = 0;
     var responseTotal = 0;
@@ -76,6 +87,8 @@ class WeekAnalytics {
           byHour[wc.toWall(l.at).hour]++;
         case LogAction.snoozed:
           snoozed++;
+        case LogAction.skipped:
+          skipped++;
         case LogAction.missed:
           missed++;
       }
@@ -101,6 +114,7 @@ class WeekAnalytics {
             count(LogAction.done),
             count(LogAction.snoozed),
             count(LogAction.missed),
+            skipped: count(LogAction.skipped),
           );
         }(),
     ];
@@ -111,6 +125,7 @@ class WeekAnalytics {
       done: done,
       snoozed: snoozed,
       missed: missed,
+      skipped: skipped,
       completionPercent: popupResponses == 0
           ? 0
           : (popupDone * 100 / popupResponses).round(),
@@ -134,6 +149,9 @@ class WeekAnalytics {
   final int done;
   final int snoozed;
   final int missed;
+
+  /// Answered "No".
+  final int skipped;
 
   /// Of pop-up responses (manual entries excluded), the % that were done.
   final int completionPercent;

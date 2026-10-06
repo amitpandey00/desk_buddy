@@ -31,5 +31,6 @@ Map<String, dynamic> _$LogEntryToJson(_LogEntry instance) => <String, dynamic>{
 const _$LogActionEnumMap = {
   LogAction.done: 'done',
   LogAction.snoozed: 'snoozed',
+  LogAction.skipped: 'skipped',
   LogAction.missed: 'missed',
 };

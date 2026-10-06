@@ -3,7 +3,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'log_entry.freezed.dart';
 part 'log_entry.g.dart';
 
-enum LogAction { done, snoozed, missed }
+/// done: answered "yes" · snoozed: "remind me later" · skipped: answered
+/// "no" (didn't do it) · missed: never answered.
+enum LogAction { done, snoozed, skipped, missed }
 
 /// One response to a reminder. Kept when its reminder is deleted.
 @freezed

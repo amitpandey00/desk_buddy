@@ -106,7 +106,14 @@ class _SpikeAppState extends State<SpikeApp>
   /// always show it.
   bool get _visible =>
       _settings.buddyVisible &&
-      (_settings.buddyAlwaysOn || _alert != null || _benchSeconds > 0);
+      (_settings.buddyAlwaysOn ||
+          _alert != null ||
+          _reacting ||
+          _benchSeconds > 0);
+
+  /// The short sad reaction after "No" (keeps the buddy on screen).
+  bool _reacting = false;
+  Timer? _reactTimer;
 
   /// What the native window was last told (null = not yet).
   bool? _windowShown;
@@ -163,6 +170,7 @@ class _SpikeAppState extends State<SpikeApp>
   BuddyState get buddyState {
     if (dragging) return BuddyState.dragging;
     if (alerting) return BuddyState.alert;
+    if (_reacting) return BuddyState.sad;
     if (!_walkOn || walker.mode == WalkMode.idle) return BuddyState.idle;
     return BuddyState.walking;
   }
@@ -376,7 +384,7 @@ class _SpikeAppState extends State<SpikeApp>
     _last = elapsed;
     if (dragging) {
       unawaited(_pollDrag());
-    } else if (_walkOn && !alerting) {
+    } else if (_walkOn && !alerting && !_reacting) {
       walker.step(
         dt,
         minX: display.work.left,
@@ -393,7 +401,7 @@ class _SpikeAppState extends State<SpikeApp>
   /// Idle: stop the frame loop and wake up when the walker would walk again.
   void _pauseTicker() {
     _ticker.stop();
-    if (!_walkOn || alerting) return;
+    if (!_walkOn || alerting || _reacting) return;
     final idleFor = walker.remaining;
     _resumeWalk = Timer(Duration(microseconds: (idleFor * 1e6).round()), () {
       walker.step(
@@ -469,6 +477,21 @@ class _SpikeAppState extends State<SpikeApp>
             formatCountdown(next.nextDueAt! - now),
           );
     _show(_Bubble.peek);
+  }
+
+  /// "No": log it as skipped, then a moment of sadness before leaving.
+  void _sayNo(AlertView a) {
+    _reactTimer?.cancel();
+    _reacting = true;
+    // Replaces the alert bubble, so the alert closing doesn't hide it.
+    _show(_Bubble.sad);
+    unawaited(widget.scheduler.respond(LogAction.skipped, firedAt: a.firedAt));
+    _reactTimer = Timer(const Duration(milliseconds: 3200), () {
+      if (!mounted) return;
+      _reacting = false;
+      if (_bubble == _Bubble.sad) _hideBubble();
+      unawaited(_applyVisibility());
+    });
   }
 
   void _onAlert(AlertView? alert) {
@@ -651,6 +674,7 @@ class _SpikeAppState extends State<SpikeApp>
     _ticker.dispose();
     _hitPoll?.cancel();
     _bubbleTimer?.cancel();
+    _reactTimer?.cancel();
     _resumeWalk?.cancel();
     _saveTimer?.cancel();
     super.dispose();
@@ -699,6 +723,7 @@ class _SpikeAppState extends State<SpikeApp>
           ),
           primary: true,
         ),
+        BubbleAction(a.skipLabel, () => _sayNo(a)),
         BubbleAction(
           a.snoozeLabel,
           () => unawaited(
@@ -714,6 +739,11 @@ class _SpikeAppState extends State<SpikeApp>
       _Bubble.none => const SizedBox.shrink(),
       _Bubble.peek => BuddyBubble(message: _peekText, compact: true),
       _Bubble.alert => _alertBubble(_alert),
+      _Bubble.sad => const BuddyBubble(
+        emoji: Strings.sadEmoji,
+        message: Strings.sadReply,
+        compact: true,
+      ),
     };
     // Measured outside the pop-in's scale transform, so the hit region and
     // click-through rect are the bubble's final layout, not a mid-animation
@@ -808,4 +838,4 @@ class _SpikeAppState extends State<SpikeApp>
   }
 }
 
-enum _Bubble { none, peek, alert }
+enum _Bubble { none, peek, alert, sad }

@@ -1,4 +1,5 @@
 import 'package:desk_buddy/features/reminders/domain/reminder.dart';
+import 'package:desk_buddy/shared/strings.dart';
 
 /// Everything the bubble (or the fallback notification) shows for a pop-up.
 class AlertView {
@@ -21,6 +22,9 @@ class AlertView {
   final String? progress;
   final String doneLabel;
   final String snoozeLabel;
+
+  /// The "No" button (didn't do it).
+  String get skipLabel => Strings.bubbleNo;
   final int firedAt;
 
   /// A "Test" / "Preview" pop-up: answering it logs nothing.
@@ -40,6 +44,7 @@ abstract interface class AlertNotifier {
   Future<void> show(
     AlertView alert, {
     required void Function() onDone,
+    required void Function() onSkip,
     required void Function() onSnooze,
   });
 
@@ -52,6 +57,7 @@ class NoAlertNotifier implements AlertNotifier {
   Future<void> show(
     AlertView alert, {
     required void Function() onDone,
+    required void Function() onSkip,
     required void Function() onSnooze,
   }) async {}
   @override

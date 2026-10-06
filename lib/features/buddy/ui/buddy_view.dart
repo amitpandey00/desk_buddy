@@ -96,7 +96,7 @@ class _BuddyViewState extends State<BuddyView>
     switch (widget.state) {
       case BuddyState.walking || BuddyState.alert:
         unawaited(_ticker.start());
-      case BuddyState.idle || BuddyState.dragging:
+      case BuddyState.idle || BuddyState.dragging || BuddyState.sad:
         _slowTimer = Timer.periodic(
           Duration(microseconds: 1000000 ~/ widget.idleFps),
           (_) => _update(),

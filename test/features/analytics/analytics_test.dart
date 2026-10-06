@@ -59,6 +59,7 @@ void main() {
           e(ny.at(2026, 10, 6, 10), a: LogAction.snoozed, rid: 'r2'),
           e(ny.at(2026, 10, 6, 11), a: LogAction.missed),
           e(ny.at(2026, 10, 5, 9), cat: 'gone'), // deleted category
+          e(ny.at(2026, 10, 6, 12), a: LogAction.skipped, rid: 'r2'),
         ],
       );
     });
@@ -70,9 +71,10 @@ void main() {
     });
 
     test('KPIs: manual entries count as done but not toward the rate', () {
-      expect((a.done, a.snoozed, a.missed), (4, 1, 1));
-      // Pop-up responses: 3 done (9/30, 10/6, 10/5) + snoozed + missed.
-      expect(a.completionPercent, 60);
+      expect((a.done, a.snoozed, a.missed, a.skipped), (4, 1, 1, 1));
+      // Pop-up responses: 3 done (9/30, 10/6, 10/5) + snoozed + missed
+      // + skipped ("No" counts against the rate).
+      expect(a.completionPercent, 50);
       expect(a.averageResponseSeconds, ((20 + 40 + 10) / 3).round());
     });
 
@@ -94,6 +96,7 @@ void main() {
       expect((r1.done, r1.snoozed, r1.missed), (3, 0, 1));
       expect(r1.completionPercent, 75);
       final r2 = a.perReminder.last;
+      expect((r2.snoozed, r2.skipped), (1, 1));
       expect(r2.completionPercent, 0);
     });
 

@@ -20,6 +20,7 @@ class FakeNotifier implements AlertNotifier {
   Future<void> show(
     AlertView alert, {
     required void Function() onDone,
+    required void Function() onSkip,
     required void Function() onSnooze,
   }) async {
     shown.add(alert);
@@ -281,6 +282,7 @@ class _ThrowingNotifier implements AlertNotifier {
   Future<void> show(
     AlertView alert, {
     required void Function() onDone,
+    required void Function() onSkip,
     required void Function() onSnooze,
   }) async => throw StateError('notifications are off');
 

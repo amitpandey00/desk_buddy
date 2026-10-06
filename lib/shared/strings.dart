@@ -61,6 +61,9 @@ abstract final class Strings {
   static String peekNext(String emoji, String title, String countdown) =>
       '$emoji $title in $countdown';
   static String remindLater(int minutes) => 'Remind me in $minutes min';
+  static const bubbleNo = 'No';
+  static const sadReply = 'Oh… okay. Next time!';
+  static const sadEmoji = '😢';
   static String goalProgress(int count, int goal, String unit) =>
       '$count / $goal${unit.isEmpty ? '' : ' $unit'} today';
 
@@ -133,6 +136,7 @@ abstract final class Strings {
   static const tagDone = 'done';
   static const tagSnoozed = 'snoozed';
   static const tagMissed = 'missed';
+  static const tagSkipped = 'said no';
   static const tagLogged = 'logged';
 
   // Reminders
@@ -229,8 +233,8 @@ abstract final class Strings {
       'here.';
   static const kpiRate = 'of reminders completed when they popped up';
   static const kpiResponse = 'average time to respond';
-  static String kpiCompleted(int snoozed, int missed) =>
-      'completed ($snoozed snoozed, $missed missed)';
+  static String kpiCompleted(int snoozed, int skipped, int missed) =>
+      'completed ($snoozed snoozed, $skipped said no, $missed missed)';
   static const completedPerDay = 'Completed per day';
   static const goalProgressTitle = 'Goal progress';
   static const goalChartEmpty =
@@ -243,6 +247,7 @@ abstract final class Strings {
   static const colReminder = 'Reminder';
   static const colDone = 'Done';
   static const colSnoozed = 'Snoozed';
+  static const colSkipped = 'Said no';
   static const colMissed = 'Missed';
   static const colCompletion = 'Completion';
   static const whenYouRespond = 'When you respond';

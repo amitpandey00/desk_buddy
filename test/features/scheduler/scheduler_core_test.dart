@@ -158,6 +158,27 @@ void main() {
       expect(h.db['a']!.enabled, isTrue);
     });
 
+    test('"No" (skipped): logged as skipped, next normal time', () {
+      final h = Harness([rem('a', due: t0)]);
+      h.tick(t0);
+      h.send(Respond(LogAction.skipped, t0 + 4 * sec));
+      expect(h.logs.single.action, LogAction.skipped);
+      expect(h.logs.single.responseSeconds, 4);
+      // Not a snooze: back on its interval from now.
+      expect(h.db['a']!.nextDueAt, t0 + 4 * sec + 60 * min);
+      expect(h.alertId, isNull);
+    });
+
+    test('a skipped one-off switches itself off', () {
+      final h = Harness([
+        rem('o', type: ScheduleType.once, date: '2026-10-06', time: '12:05'),
+      ]);
+      final at = ny.at(2026, 10, 6, 12, 5);
+      h.tick(at);
+      h.send(Respond(LogAction.skipped, at + sec));
+      expect(h.db['o']!.enabled, isFalse);
+    });
+
     test('auto-miss after autoMissMinutes, then next from now', () {
       final h = Harness(
         [rem('a', due: t0)],
