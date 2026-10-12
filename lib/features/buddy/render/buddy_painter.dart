@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:desk_buddy/features/buddy/domain/buddy_look.dart';
 import 'package:desk_buddy/features/buddy/movement/buddy_pose.dart';
 import 'package:desk_buddy/features/buddy/render/props.dart';
@@ -92,6 +94,10 @@ final Path _browsSad = svgPath('M46 41 Q51 38 56 37 M64 37 Q69 38 74 41');
 final Path _frown = svgPath('M52 63 Q60 56 68 63');
 final Path _tear = svgPath('M49 53 Q46.5 57.5 49 59 Q51.5 57.5 49 53Z');
 
+// Where the photo face goes: ear to ear like the painted head, its eyes on
+// the painted eye line (y 48). Matches the 205×240 asset's proportions.
+const _photoFaceRect = Rect.fromLTWH(31, 5, 58, 68);
+
 const _ink = Color(0xFF1C2733);
 const _white = Color(0xFFFFFFFF);
 
@@ -103,6 +109,7 @@ class BuddyPainter extends CustomPainter {
     required this.look,
     required this.prop,
     required this.pose,
+    this.face,
     this.flip = false,
   }) : super(repaint: pose);
 
@@ -110,6 +117,10 @@ class BuddyPainter extends CustomPainter {
   final BuddyLook look;
   final PropDef prop;
   final ValueListenable<BuddyPose> pose;
+
+  /// The decoded photo face; used when the look asks for it. Until it's
+  /// loaded (or if it can't be), the painted head stands in.
+  final ui.Image? face;
 
   /// Mirror horizontally (walking left).
   final bool flip;
@@ -157,19 +168,29 @@ class BuddyPainter extends CustomPainter {
     canvas.drawPath(_lapels, _fill(c.jacketDark));
     _rrect(canvas, 54, 64, 12, 13, 4, c.neck);
 
-    // Head.
-    if (look.hairStyle == HairStyle.long) {
-      canvas.drawPath(_backHairLong, _fill(c.hair));
-    }
-    canvas
-      ..drawCircle(const Offset(35, 49), 5, _fill(c.skin))
-      ..drawCircle(const Offset(85, 49), 5, _fill(c.skin))
-      ..drawOval(
-        Rect.fromCenter(center: const Offset(60, 46), width: 50, height: 54),
-        _fill(c.skin),
+    // Head: the photo face, or the painted head and hair.
+    final photo = look.photoFace ? face : null;
+    if (photo != null) {
+      canvas.drawImageRect(
+        photo,
+        Offset.zero & Size(photo.width.toDouble(), photo.height.toDouble()),
+        _photoFaceRect,
+        Paint()..filterQuality = FilterQuality.medium,
       );
-    final hair = _hair[look.hairStyle];
-    if (hair != null) canvas.drawPath(hair, _fill(c.hair));
+    } else {
+      if (look.hairStyle == HairStyle.long) {
+        canvas.drawPath(_backHairLong, _fill(c.hair));
+      }
+      canvas
+        ..drawCircle(const Offset(35, 49), 5, _fill(c.skin))
+        ..drawCircle(const Offset(85, 49), 5, _fill(c.skin))
+        ..drawOval(
+          Rect.fromCenter(center: const Offset(60, 46), width: 50, height: 54),
+          _fill(c.skin),
+        );
+      final hair = _hair[look.hairStyle];
+      if (hair != null) canvas.drawPath(hair, _fill(c.hair));
+    }
     switch (look.hat) {
       case HatStyle.none:
         break;
@@ -182,18 +203,21 @@ class BuddyPainter extends CustomPainter {
         _rrect(canvas, 33, 31, 54, 9, 4.5, c.jacketDark);
         canvas.drawCircle(const Offset(60, 9), 6, _fill(c.shirt));
     }
-    canvas
-      ..drawPath(p.frown > .5 ? _browsSad : _brows, _line(c.brows, 2.4))
-      // Eyes (blink scales them about their center line).
-      ..save()
-      ..translate(60, 48)
-      ..scale(1, p.eyeScaleY)
-      ..translate(-60, -48)
-      ..drawCircle(const Offset(51, 48), 3.2, _fill(_ink))
-      ..drawCircle(const Offset(69, 48), 3.2, _fill(_ink))
-      ..drawCircle(const Offset(52, 47), 1, _fill(_white))
-      ..drawCircle(const Offset(70, 47), 1, _fill(_white))
-      ..restore();
+    final sad = p.frown > .5;
+    if (photo == null) {
+      canvas
+        ..drawPath(sad ? _browsSad : _brows, _line(c.brows, 2.4))
+        // Eyes (blink scales them about their center line).
+        ..save()
+        ..translate(60, 48)
+        ..scale(1, p.eyeScaleY)
+        ..translate(-60, -48)
+        ..drawCircle(const Offset(51, 48), 3.2, _fill(_ink))
+        ..drawCircle(const Offset(69, 48), 3.2, _fill(_ink))
+        ..drawCircle(const Offset(52, 47), 1, _fill(_white))
+        ..drawCircle(const Offset(70, 47), 1, _fill(_white))
+        ..restore();
+    }
 
     if (look.spectacles) {
       final g = _line(_ink, 2)..strokeCap = StrokeCap.butt;
@@ -202,12 +226,13 @@ class BuddyPainter extends CustomPainter {
         ..drawRRect(_r(62, 42, 15, 12, 4), g)
         ..drawLine(const Offset(58, 47), const Offset(62, 47), g);
     }
-    final sad = p.frown > .5;
-    final cheek = Color.fromRGBO(255, 138, 128, sad ? .18 : .35);
-    canvas
-      ..drawCircle(const Offset(45, 57), 4, _fill(cheek))
-      ..drawCircle(const Offset(75, 57), 4, _fill(cheek))
-      ..drawPath(sad ? _frown : _smile, _line(const Color(0xFF6B2F1D), 2.6));
+    if (photo == null) {
+      final cheek = Color.fromRGBO(255, 138, 128, sad ? .18 : .35);
+      canvas
+        ..drawCircle(const Offset(45, 57), 4, _fill(cheek))
+        ..drawCircle(const Offset(75, 57), 4, _fill(cheek))
+        ..drawPath(sad ? _frown : _smile, _line(const Color(0xFF6B2F1D), 2.6));
+    }
     if (sad) {
       canvas.drawPath(_tear, _fill(const Color.fromRGBO(120, 190, 255, .9)));
     }
@@ -268,6 +293,7 @@ class BuddyPainter extends CustomPainter {
       old.palette != palette ||
       old.look != look ||
       old.prop != prop ||
+      old.face != face ||
       old.flip != flip ||
       old.pose != pose;
 }

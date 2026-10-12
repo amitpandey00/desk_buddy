@@ -19,7 +19,7 @@ class AppDatabase extends _$AppDatabase {
   /// Bump with every schema change, add a step to [migration], and run
   /// `dart run drift_dev make-migrations` (see CLAUDE.md).
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   // Note: drift's native executor opens every transaction with
   // `BEGIN IMMEDIATE`, so a read-then-write transaction holds the write lock
@@ -37,6 +37,10 @@ class AppDatabase extends _$AppDatabase {
       // v3: Settings → "Always on screen" (off = buddy only for reminders).
       from2To3: (m, schema) async {
         await m.addColumn(schema.settings, schema.settings.buddyAlwaysOn);
+      },
+      // v4: Character → "Face: Photo" (the bundled face image, D37).
+      from3To4: (m, schema) async {
+        await m.addColumn(schema.buddyLooks, schema.buddyLooks.photoFace);
       },
     ),
     beforeOpen: (details) async {

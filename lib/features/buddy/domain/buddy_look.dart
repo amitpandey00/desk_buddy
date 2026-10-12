@@ -9,6 +9,7 @@ enum HatStyle { none, cap, beanie }
 
 /// How the buddy looks. Colors are `#RRGGBB`. `defaultPropId` is a key of
 /// the prop registry: what the buddy holds when a reminder doesn't say.
+/// `photoFace` draws the bundled face image instead of the painted head.
 @freezed
 abstract class BuddyLook with _$BuddyLook {
   const factory BuddyLook({
@@ -22,6 +23,7 @@ abstract class BuddyLook with _$BuddyLook {
     @Default(HatStyle.none) HatStyle hat,
     @Default(false) bool spectacles,
     @Default('none') String defaultPropId,
+    @Default(false) bool photoFace,
   }) = _BuddyLook;
 
   factory BuddyLook.fromJson(Map<String, dynamic> json) =>
@@ -71,11 +73,22 @@ abstract final class LookPresets {
     spectacles: true,
     defaultPropId: 'book',
   );
+  // Matches the outfit in the face image's source portrait.
+  static const me = BuddyLook(
+    skinHex: '#C98A62',
+    hairHex: '#151515',
+    jacketHex: '#C9A160',
+    shirtHex: '#FFFFFF',
+    pantsHex: '#33427A',
+    shoesHex: '#F4F4F4',
+    photoFace: true,
+  );
 
   static const Map<String, BuddyLook> all = {
     'classic': classic,
     'sporty': sporty,
     'office': office,
     'cozy': cozy,
+    'me': me,
   };
 }

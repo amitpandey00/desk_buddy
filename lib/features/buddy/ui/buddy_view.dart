@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:desk_buddy/features/buddy/domain/buddy_look.dart';
 import 'package:desk_buddy/features/buddy/movement/buddy_pose.dart';
 import 'package:desk_buddy/features/buddy/render/buddy_painter.dart';
+import 'package:desk_buddy/features/buddy/render/face_image.dart';
 import 'package:desk_buddy/features/buddy/render/props.dart';
 import 'package:desk_buddy/shared/strings.dart';
 import 'package:flutter/scheduler.dart';
@@ -59,6 +61,7 @@ class _BuddyViewState extends State<BuddyView>
   Timer? _slowTimer;
   late BuddyPalette _palette = BuddyPalette.of(widget.look);
   late PropDef _prop = _resolveProp();
+  ui.Image? _face;
 
   bool get _reduceMotion =>
       widget.reduceMotion ??
@@ -69,6 +72,28 @@ class _BuddyViewState extends State<BuddyView>
       resolveProp(widget.propId, widget.look.defaultPropId);
 
   @override
+  void initState() {
+    super.initState();
+    _loadFace();
+  }
+
+  /// Fetches the photo face the first time a look asks for it.
+  void _loadFace() {
+    if (!widget.look.photoFace || _face != null) return;
+    unawaited(
+      BuddyFaceImage.load().then(
+        (image) {
+          if (mounted) setState(() => _face = image);
+        },
+        onError: (Object e) {
+          // Never lose the buddy over it: the painted head stays.
+          debugPrint('Photo face unavailable, using the painted head: $e');
+        },
+      ),
+    );
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _schedule();
@@ -77,7 +102,10 @@ class _BuddyViewState extends State<BuddyView>
   @override
   void didUpdateWidget(BuddyView old) {
     super.didUpdateWidget(old);
-    if (old.look != widget.look) _palette = BuddyPalette.of(widget.look);
+    if (old.look != widget.look) {
+      _palette = BuddyPalette.of(widget.look);
+      _loadFace();
+    }
     if (old.look != widget.look || old.propId != widget.propId) {
       _prop = _resolveProp();
     }
@@ -133,6 +161,7 @@ class _BuddyViewState extends State<BuddyView>
           look: widget.look,
           prop: _prop,
           pose: _pose,
+          face: _face,
           flip: widget.flip,
         ),
       ),

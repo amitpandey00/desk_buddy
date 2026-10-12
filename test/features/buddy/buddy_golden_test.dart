@@ -1,6 +1,10 @@
+import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:desk_buddy/features/buddy/domain/buddy_look.dart';
 import 'package:desk_buddy/features/buddy/movement/buddy_pose.dart';
 import 'package:desk_buddy/features/buddy/render/buddy_painter.dart';
+import 'package:desk_buddy/features/buddy/render/face_image.dart';
 import 'package:desk_buddy/features/buddy/render/props.dart';
 import 'package:desk_buddy/features/buddy/ui/buddy_bubble.dart';
 import 'package:desk_buddy/shared/strings.dart';
@@ -15,6 +19,7 @@ void main() {
     BuddyPose pose, {
     String? prop,
     bool flip = false,
+    ui.Image? face,
   }) => CustomPaint(
     size: const Size(120, 222),
     painter: BuddyPainter(
@@ -22,6 +27,7 @@ void main() {
       look: look,
       prop: resolveProp(prop, look.defaultPropId),
       pose: ValueNotifier(pose),
+      face: face,
       flip: flip,
     ),
   );
@@ -53,7 +59,7 @@ void main() {
 
   testWidgets('looks × poses', (tester) async {
     tester.view
-      ..physicalSize = const Size(5 * 136.0, 4 * 238.0)
+      ..physicalSize = Size(5 * 136.0, LookPresets.all.length * 238.0)
       ..devicePixelRatio = 1;
     addTearDown(tester.view.reset);
     await tester.pumpWidget(
@@ -65,6 +71,37 @@ void main() {
     await expectLater(
       find.byType(Wrap),
       matchesGoldenFile('goldens/looks_x_poses.png'),
+    );
+  });
+
+  testWidgets('photo face × poses, with hat and glasses', (tester) async {
+    final face = (await tester.runAsync(() async {
+      final codec = await ui.instantiateImageCodec(
+        File(buddyFaceAsset).readAsBytesSync(),
+      );
+      return (await codec.getNextFrame()).image;
+    }))!;
+    addTearDown(face.dispose);
+    tester.view
+      ..physicalSize = const Size(7 * 136.0, 238)
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    const me = LookPresets.me;
+    await tester.pumpWidget(
+      sheet([
+        for (final pose in poses.values) buddy(me, pose, face: face),
+        buddy(me.copyWith(hat: HatStyle.cap), BuddyPose.rest, face: face),
+        buddy(
+          me.copyWith(spectacles: true),
+          poses['walk']!,
+          face: face,
+          flip: true,
+        ),
+      ]),
+    );
+    await expectLater(
+      find.byType(Wrap),
+      matchesGoldenFile('goldens/photo_face.png'),
     );
   });
 

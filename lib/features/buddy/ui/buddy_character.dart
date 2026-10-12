@@ -7,7 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:rive/rive.dart' as rive;
 
 /// The buddy, drawn by Rive when `assets/rive/buddy.riv` ships and loads,
-/// otherwise by [BuddyView] (the CustomPainter, always available).
+/// otherwise by [BuddyView] (the CustomPainter, always available). A photo
+/// face is the painter's alone (D37).
 class BuddyCharacter extends StatelessWidget {
   const BuddyCharacter({
     required this.look,
@@ -33,7 +34,7 @@ class BuddyCharacter extends StatelessWidget {
     future: RiveCharacterFile.load(),
     builder: (context, snap) {
       final file = snap.data;
-      if (file == null) {
+      if (file == null || look.photoFace) {
         return BuddyView(
           look: look,
           state: state,

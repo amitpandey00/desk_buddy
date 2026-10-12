@@ -2157,6 +2157,21 @@ class $BuddyLooksTable extends BuddyLooks
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _photoFaceMeta = const VerificationMeta(
+    'photoFace',
+  );
+  @override
+  late final GeneratedColumn<bool> photoFace = GeneratedColumn<bool>(
+    'photo_face',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("photo_face" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -2170,6 +2185,7 @@ class $BuddyLooksTable extends BuddyLooks
     hat,
     spectacles,
     defaultPropId,
+    photoFace,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2253,6 +2269,12 @@ class $BuddyLooksTable extends BuddyLooks
     } else if (isInserting) {
       context.missing(_defaultPropIdMeta);
     }
+    if (data.containsKey('photo_face')) {
+      context.handle(
+        _photoFaceMeta,
+        photoFace.isAcceptableOrUnknown(data['photo_face']!, _photoFaceMeta),
+      );
+    }
     return context;
   }
 
@@ -2310,6 +2332,10 @@ class $BuddyLooksTable extends BuddyLooks
         DriftSqlType.string,
         data['${effectivePrefix}default_prop_id'],
       )!,
+      photoFace: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}photo_face'],
+      )!,
     );
   }
 
@@ -2336,6 +2362,7 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
   final HatStyle hat;
   final bool spectacles;
   final String defaultPropId;
+  final bool photoFace;
   const BuddyLookRow({
     required this.id,
     required this.skinHex,
@@ -2348,6 +2375,7 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
     required this.hat,
     required this.spectacles,
     required this.defaultPropId,
+    required this.photoFace,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2369,6 +2397,7 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
     }
     map['spectacles'] = Variable<bool>(spectacles);
     map['default_prop_id'] = Variable<String>(defaultPropId);
+    map['photo_face'] = Variable<bool>(photoFace);
     return map;
   }
 
@@ -2385,6 +2414,7 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
       hat: Value(hat),
       spectacles: Value(spectacles),
       defaultPropId: Value(defaultPropId),
+      photoFace: Value(photoFace),
     );
   }
 
@@ -2409,6 +2439,7 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
       ),
       spectacles: serializer.fromJson<bool>(json['spectacles']),
       defaultPropId: serializer.fromJson<String>(json['defaultPropId']),
+      photoFace: serializer.fromJson<bool>(json['photoFace']),
     );
   }
   @override
@@ -2430,6 +2461,7 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
       ),
       'spectacles': serializer.toJson<bool>(spectacles),
       'defaultPropId': serializer.toJson<String>(defaultPropId),
+      'photoFace': serializer.toJson<bool>(photoFace),
     };
   }
 
@@ -2445,6 +2477,7 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
     HatStyle? hat,
     bool? spectacles,
     String? defaultPropId,
+    bool? photoFace,
   }) => BuddyLookRow(
     id: id ?? this.id,
     skinHex: skinHex ?? this.skinHex,
@@ -2457,6 +2490,7 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
     hat: hat ?? this.hat,
     spectacles: spectacles ?? this.spectacles,
     defaultPropId: defaultPropId ?? this.defaultPropId,
+    photoFace: photoFace ?? this.photoFace,
   );
   BuddyLookRow copyWithCompanion(BuddyLooksCompanion data) {
     return BuddyLookRow(
@@ -2475,6 +2509,7 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
       defaultPropId: data.defaultPropId.present
           ? data.defaultPropId.value
           : this.defaultPropId,
+      photoFace: data.photoFace.present ? data.photoFace.value : this.photoFace,
     );
   }
 
@@ -2491,7 +2526,8 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
           ..write('hairStyle: $hairStyle, ')
           ..write('hat: $hat, ')
           ..write('spectacles: $spectacles, ')
-          ..write('defaultPropId: $defaultPropId')
+          ..write('defaultPropId: $defaultPropId, ')
+          ..write('photoFace: $photoFace')
           ..write(')'))
         .toString();
   }
@@ -2509,6 +2545,7 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
     hat,
     spectacles,
     defaultPropId,
+    photoFace,
   );
   @override
   bool operator ==(Object other) =>
@@ -2524,7 +2561,8 @@ class BuddyLookRow extends DataClass implements Insertable<BuddyLookRow> {
           other.hairStyle == this.hairStyle &&
           other.hat == this.hat &&
           other.spectacles == this.spectacles &&
-          other.defaultPropId == this.defaultPropId);
+          other.defaultPropId == this.defaultPropId &&
+          other.photoFace == this.photoFace);
 }
 
 class BuddyLooksCompanion extends UpdateCompanion<BuddyLookRow> {
@@ -2539,6 +2577,7 @@ class BuddyLooksCompanion extends UpdateCompanion<BuddyLookRow> {
   final Value<HatStyle> hat;
   final Value<bool> spectacles;
   final Value<String> defaultPropId;
+  final Value<bool> photoFace;
   const BuddyLooksCompanion({
     this.id = const Value.absent(),
     this.skinHex = const Value.absent(),
@@ -2551,6 +2590,7 @@ class BuddyLooksCompanion extends UpdateCompanion<BuddyLookRow> {
     this.hat = const Value.absent(),
     this.spectacles = const Value.absent(),
     this.defaultPropId = const Value.absent(),
+    this.photoFace = const Value.absent(),
   });
   BuddyLooksCompanion.insert({
     this.id = const Value.absent(),
@@ -2564,6 +2604,7 @@ class BuddyLooksCompanion extends UpdateCompanion<BuddyLookRow> {
     required HatStyle hat,
     required bool spectacles,
     required String defaultPropId,
+    this.photoFace = const Value.absent(),
   }) : skinHex = Value(skinHex),
        hairHex = Value(hairHex),
        jacketHex = Value(jacketHex),
@@ -2586,6 +2627,7 @@ class BuddyLooksCompanion extends UpdateCompanion<BuddyLookRow> {
     Expression<String>? hat,
     Expression<bool>? spectacles,
     Expression<String>? defaultPropId,
+    Expression<bool>? photoFace,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2599,6 +2641,7 @@ class BuddyLooksCompanion extends UpdateCompanion<BuddyLookRow> {
       if (hat != null) 'hat': hat,
       if (spectacles != null) 'spectacles': spectacles,
       if (defaultPropId != null) 'default_prop_id': defaultPropId,
+      if (photoFace != null) 'photo_face': photoFace,
     });
   }
 
@@ -2614,6 +2657,7 @@ class BuddyLooksCompanion extends UpdateCompanion<BuddyLookRow> {
     Value<HatStyle>? hat,
     Value<bool>? spectacles,
     Value<String>? defaultPropId,
+    Value<bool>? photoFace,
   }) {
     return BuddyLooksCompanion(
       id: id ?? this.id,
@@ -2627,6 +2671,7 @@ class BuddyLooksCompanion extends UpdateCompanion<BuddyLookRow> {
       hat: hat ?? this.hat,
       spectacles: spectacles ?? this.spectacles,
       defaultPropId: defaultPropId ?? this.defaultPropId,
+      photoFace: photoFace ?? this.photoFace,
     );
   }
 
@@ -2670,6 +2715,9 @@ class BuddyLooksCompanion extends UpdateCompanion<BuddyLookRow> {
     if (defaultPropId.present) {
       map['default_prop_id'] = Variable<String>(defaultPropId.value);
     }
+    if (photoFace.present) {
+      map['photo_face'] = Variable<bool>(photoFace.value);
+    }
     return map;
   }
 
@@ -2686,7 +2734,8 @@ class BuddyLooksCompanion extends UpdateCompanion<BuddyLookRow> {
           ..write('hairStyle: $hairStyle, ')
           ..write('hat: $hat, ')
           ..write('spectacles: $spectacles, ')
-          ..write('defaultPropId: $defaultPropId')
+          ..write('defaultPropId: $defaultPropId, ')
+          ..write('photoFace: $photoFace')
           ..write(')'))
         .toString();
   }
@@ -4900,6 +4949,7 @@ typedef $$BuddyLooksTableCreateCompanionBuilder =
       required HatStyle hat,
       required bool spectacles,
       required String defaultPropId,
+      Value<bool> photoFace,
     });
 typedef $$BuddyLooksTableUpdateCompanionBuilder =
     BuddyLooksCompanion Function({
@@ -4914,6 +4964,7 @@ typedef $$BuddyLooksTableUpdateCompanionBuilder =
       Value<HatStyle> hat,
       Value<bool> spectacles,
       Value<String> defaultPropId,
+      Value<bool> photoFace,
     });
 
 class $$BuddyLooksTableFilterComposer
@@ -4981,6 +5032,11 @@ class $$BuddyLooksTableFilterComposer
     column: $table.defaultPropId,
     builder: (column) => ColumnFilters(column),
   );
+
+  ColumnFilters<bool> get photoFace => $composableBuilder(
+    column: $table.photoFace,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$BuddyLooksTableOrderingComposer
@@ -5046,6 +5102,11 @@ class $$BuddyLooksTableOrderingComposer
     column: $table.defaultPropId,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get photoFace => $composableBuilder(
+    column: $table.photoFace,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$BuddyLooksTableAnnotationComposer
@@ -5093,6 +5154,9 @@ class $$BuddyLooksTableAnnotationComposer
     column: $table.defaultPropId,
     builder: (column) => column,
   );
+
+  GeneratedColumn<bool> get photoFace =>
+      $composableBuilder(column: $table.photoFace, builder: (column) => column);
 }
 
 class $$BuddyLooksTableTableManager
@@ -5137,6 +5201,7 @@ class $$BuddyLooksTableTableManager
                 Value<HatStyle> hat = const Value.absent(),
                 Value<bool> spectacles = const Value.absent(),
                 Value<String> defaultPropId = const Value.absent(),
+                Value<bool> photoFace = const Value.absent(),
               }) => BuddyLooksCompanion(
                 id: id,
                 skinHex: skinHex,
@@ -5149,6 +5214,7 @@ class $$BuddyLooksTableTableManager
                 hat: hat,
                 spectacles: spectacles,
                 defaultPropId: defaultPropId,
+                photoFace: photoFace,
               ),
           createCompanionCallback:
               ({
@@ -5163,6 +5229,7 @@ class $$BuddyLooksTableTableManager
                 required HatStyle hat,
                 required bool spectacles,
                 required String defaultPropId,
+                Value<bool> photoFace = const Value.absent(),
               }) => BuddyLooksCompanion.insert(
                 id: id,
                 skinHex: skinHex,
@@ -5175,6 +5242,7 @@ class $$BuddyLooksTableTableManager
                 hat: hat,
                 spectacles: spectacles,
                 defaultPropId: defaultPropId,
+                photoFace: photoFace,
               ),
           withReferenceMapper: (p0) => p0
               .map(

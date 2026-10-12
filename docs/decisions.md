@@ -536,3 +536,22 @@ reminder's done label, **No**, and Remind me in N min.
   frown and a tear, and a compact "😢 Oh… okay. Next time!" bubble. It then
   leaves, unless "Always on screen" is on. Reduce motion keeps the sad face
   without the breathing. The Rive contract gains the `sad` state.
+
+## D37 — Photo face (2026-10-12)
+
+Owner request: use their own cartoon portrait as the buddy's face.
+- The head (hair, ears, face, beard) is cropped from the owner's transparent
+  portrait into `assets/character/face.png` (205×240). The painter draws it
+  ear to ear over the painted head's area (`Rect(31, 5, 58, 68)` in the
+  120×222 design), with the eyes on the painted eye line. The body, props,
+  hats and glasses stay painted, so every pose, prop and color still works.
+- New look option **Face: Drawn / Photo** (`BuddyLook.photoFace`, schema v4,
+  `buddy_looks.photo_face`, default off; existing installs and older backups
+  load as Drawn). New preset **Me** matches the portrait's outfit: tan
+  jacket, white shirt, navy pants, white shoes, with the photo face.
+- With the photo face, hair style and colors only affect the painted head.
+  The photo can't blink or frown. The sad state still slumps, breathes
+  slowly and shows the tear. Until the image is decoded (or if it can't
+  be), the painted head is drawn instead.
+- A photo-face look always uses the painter, even if a Rive file ships,
+  because Rive can't show the bundled image.
