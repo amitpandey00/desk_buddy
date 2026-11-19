@@ -162,6 +162,7 @@ class SettingsRepository {
     hat: r.hat,
     spectacles: r.spectacles,
     defaultPropId: r.defaultPropId,
+    photoFace: r.photoFace,
   );
 
   static BuddyLookRow _lookRow(BuddyLook l) => BuddyLookRow(
@@ -176,5 +177,6 @@ class SettingsRepository {
     hat: l.hat,
     spectacles: l.spectacles,
     defaultPropId: l.defaultPropId,
+    photoFace: l.photoFace,
   );
 }

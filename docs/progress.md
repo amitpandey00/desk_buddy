@@ -41,6 +41,7 @@
 - [x] Wired into the spike host: real buddy, taps alternate peek / demo alert (exercises click-through on bubble buttons), Enter/Space peek, position saved on drag end + every 15 s
 - [x] Tests: 48 passing (unit, widget, goldens for looks × poses, props, bubbles)
 - [ ] See it on screen (blocked by the VS workload)
+- [x] Photo face (D37): Character → Face: Photo, preset "Me"; golden `photo_face.png`
 
 ### Hand-check list once it builds (`flutter run -d windows --dart-define=SPIKE=A`, then B, C)
 

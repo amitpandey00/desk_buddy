@@ -19,6 +19,7 @@ _BuddyLook _$BuddyLookFromJson(Map<String, dynamic> json) => _BuddyLook(
   hat: $enumDecodeNullable(_$HatStyleEnumMap, json['hat']) ?? HatStyle.none,
   spectacles: json['spectacles'] as bool? ?? false,
   defaultPropId: json['defaultPropId'] as String? ?? 'none',
+  photoFace: json['photoFace'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$BuddyLookToJson(_BuddyLook instance) =>
@@ -33,6 +34,7 @@ Map<String, dynamic> _$BuddyLookToJson(_BuddyLook instance) =>
       'hat': _$HatStyleEnumMap[instance.hat]!,
       'spectacles': instance.spectacles,
       'defaultPropId': instance.defaultPropId,
+      'photoFace': instance.photoFace,
     };
 
 const _$HairStyleEnumMap = {

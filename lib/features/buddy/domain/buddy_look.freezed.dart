@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BuddyLook {
 
- String get skinHex; String get hairHex; String get jacketHex; String get shirtHex; String get pantsHex; String get shoesHex; HairStyle get hairStyle; HatStyle get hat; bool get spectacles; String get defaultPropId;
+ String get skinHex; String get hairHex; String get jacketHex; String get shirtHex; String get pantsHex; String get shoesHex; HairStyle get hairStyle; HatStyle get hat; bool get spectacles; String get defaultPropId; bool get photoFace;
 /// Create a copy of BuddyLook
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $BuddyLookCopyWith<BuddyLook> get copyWith => _$BuddyLookCopyWithImpl<BuddyLook>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BuddyLook&&(identical(other.skinHex, skinHex) || other.skinHex == skinHex)&&(identical(other.hairHex, hairHex) || other.hairHex == hairHex)&&(identical(other.jacketHex, jacketHex) || other.jacketHex == jacketHex)&&(identical(other.shirtHex, shirtHex) || other.shirtHex == shirtHex)&&(identical(other.pantsHex, pantsHex) || other.pantsHex == pantsHex)&&(identical(other.shoesHex, shoesHex) || other.shoesHex == shoesHex)&&(identical(other.hairStyle, hairStyle) || other.hairStyle == hairStyle)&&(identical(other.hat, hat) || other.hat == hat)&&(identical(other.spectacles, spectacles) || other.spectacles == spectacles)&&(identical(other.defaultPropId, defaultPropId) || other.defaultPropId == defaultPropId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BuddyLook&&(identical(other.skinHex, skinHex) || other.skinHex == skinHex)&&(identical(other.hairHex, hairHex) || other.hairHex == hairHex)&&(identical(other.jacketHex, jacketHex) || other.jacketHex == jacketHex)&&(identical(other.shirtHex, shirtHex) || other.shirtHex == shirtHex)&&(identical(other.pantsHex, pantsHex) || other.pantsHex == pantsHex)&&(identical(other.shoesHex, shoesHex) || other.shoesHex == shoesHex)&&(identical(other.hairStyle, hairStyle) || other.hairStyle == hairStyle)&&(identical(other.hat, hat) || other.hat == hat)&&(identical(other.spectacles, spectacles) || other.spectacles == spectacles)&&(identical(other.defaultPropId, defaultPropId) || other.defaultPropId == defaultPropId)&&(identical(other.photoFace, photoFace) || other.photoFace == photoFace));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,skinHex,hairHex,jacketHex,shirtHex,pantsHex,shoesHex,hairStyle,hat,spectacles,defaultPropId);
+int get hashCode => Object.hash(runtimeType,skinHex,hairHex,jacketHex,shirtHex,pantsHex,shoesHex,hairStyle,hat,spectacles,defaultPropId,photoFace);
 
 @override
 String toString() {
-  return 'BuddyLook(skinHex: $skinHex, hairHex: $hairHex, jacketHex: $jacketHex, shirtHex: $shirtHex, pantsHex: $pantsHex, shoesHex: $shoesHex, hairStyle: $hairStyle, hat: $hat, spectacles: $spectacles, defaultPropId: $defaultPropId)';
+  return 'BuddyLook(skinHex: $skinHex, hairHex: $hairHex, jacketHex: $jacketHex, shirtHex: $shirtHex, pantsHex: $pantsHex, shoesHex: $shoesHex, hairStyle: $hairStyle, hat: $hat, spectacles: $spectacles, defaultPropId: $defaultPropId, photoFace: $photoFace)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $BuddyLookCopyWith<$Res>  {
   factory $BuddyLookCopyWith(BuddyLook value, $Res Function(BuddyLook) _then) = _$BuddyLookCopyWithImpl;
 @useResult
 $Res call({
- String skinHex, String hairHex, String jacketHex, String shirtHex, String pantsHex, String shoesHex, HairStyle hairStyle, HatStyle hat, bool spectacles, String defaultPropId
+ String skinHex, String hairHex, String jacketHex, String shirtHex, String pantsHex, String shoesHex, HairStyle hairStyle, HatStyle hat, bool spectacles, String defaultPropId, bool photoFace
 });
 
 
@@ -66,7 +66,7 @@ class _$BuddyLookCopyWithImpl<$Res>
 
 /// Create a copy of BuddyLook
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? skinHex = null,Object? hairHex = null,Object? jacketHex = null,Object? shirtHex = null,Object? pantsHex = null,Object? shoesHex = null,Object? hairStyle = null,Object? hat = null,Object? spectacles = null,Object? defaultPropId = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? skinHex = null,Object? hairHex = null,Object? jacketHex = null,Object? shirtHex = null,Object? pantsHex = null,Object? shoesHex = null,Object? hairStyle = null,Object? hat = null,Object? spectacles = null,Object? defaultPropId = null,Object? photoFace = null,}) {
   return _then(BuddyLook(
 skinHex: null == skinHex ? _self.skinHex : skinHex // ignore: cast_nullable_to_non_nullable
 as String,hairHex: null == hairHex ? _self.hairHex : hairHex // ignore: cast_nullable_to_non_nullable
@@ -78,7 +78,8 @@ as String,hairStyle: null == hairStyle ? _self.hairStyle : hairStyle // ignore: 
 as HairStyle,hat: null == hat ? _self.hat : hat // ignore: cast_nullable_to_non_nullable
 as HatStyle,spectacles: null == spectacles ? _self.spectacles : spectacles // ignore: cast_nullable_to_non_nullable
 as bool,defaultPropId: null == defaultPropId ? _self.defaultPropId : defaultPropId // ignore: cast_nullable_to_non_nullable
-as String,
+as String,photoFace: null == photoFace ? _self.photoFace : photoFace // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -163,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String skinHex,  String hairHex,  String jacketHex,  String shirtHex,  String pantsHex,  String shoesHex,  HairStyle hairStyle,  HatStyle hat,  bool spectacles,  String defaultPropId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String skinHex,  String hairHex,  String jacketHex,  String shirtHex,  String pantsHex,  String shoesHex,  HairStyle hairStyle,  HatStyle hat,  bool spectacles,  String defaultPropId,  bool photoFace)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BuddyLook() when $default != null:
-return $default(_that.skinHex,_that.hairHex,_that.jacketHex,_that.shirtHex,_that.pantsHex,_that.shoesHex,_that.hairStyle,_that.hat,_that.spectacles,_that.defaultPropId);case _:
+return $default(_that.skinHex,_that.hairHex,_that.jacketHex,_that.shirtHex,_that.pantsHex,_that.shoesHex,_that.hairStyle,_that.hat,_that.spectacles,_that.defaultPropId,_that.photoFace);case _:
   return orElse();
 
 }
@@ -184,10 +185,10 @@ return $default(_that.skinHex,_that.hairHex,_that.jacketHex,_that.shirtHex,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String skinHex,  String hairHex,  String jacketHex,  String shirtHex,  String pantsHex,  String shoesHex,  HairStyle hairStyle,  HatStyle hat,  bool spectacles,  String defaultPropId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String skinHex,  String hairHex,  String jacketHex,  String shirtHex,  String pantsHex,  String shoesHex,  HairStyle hairStyle,  HatStyle hat,  bool spectacles,  String defaultPropId,  bool photoFace)  $default,) {final _that = this;
 switch (_that) {
 case _BuddyLook():
-return $default(_that.skinHex,_that.hairHex,_that.jacketHex,_that.shirtHex,_that.pantsHex,_that.shoesHex,_that.hairStyle,_that.hat,_that.spectacles,_that.defaultPropId);case _:
+return $default(_that.skinHex,_that.hairHex,_that.jacketHex,_that.shirtHex,_that.pantsHex,_that.shoesHex,_that.hairStyle,_that.hat,_that.spectacles,_that.defaultPropId,_that.photoFace);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -204,10 +205,10 @@ return $default(_that.skinHex,_that.hairHex,_that.jacketHex,_that.shirtHex,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String skinHex,  String hairHex,  String jacketHex,  String shirtHex,  String pantsHex,  String shoesHex,  HairStyle hairStyle,  HatStyle hat,  bool spectacles,  String defaultPropId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String skinHex,  String hairHex,  String jacketHex,  String shirtHex,  String pantsHex,  String shoesHex,  HairStyle hairStyle,  HatStyle hat,  bool spectacles,  String defaultPropId,  bool photoFace)?  $default,) {final _that = this;
 switch (_that) {
 case _BuddyLook() when $default != null:
-return $default(_that.skinHex,_that.hairHex,_that.jacketHex,_that.shirtHex,_that.pantsHex,_that.shoesHex,_that.hairStyle,_that.hat,_that.spectacles,_that.defaultPropId);case _:
+return $default(_that.skinHex,_that.hairHex,_that.jacketHex,_that.shirtHex,_that.pantsHex,_that.shoesHex,_that.hairStyle,_that.hat,_that.spectacles,_that.defaultPropId,_that.photoFace);case _:
   return null;
 
 }
@@ -219,7 +220,7 @@ return $default(_that.skinHex,_that.hairHex,_that.jacketHex,_that.shirtHex,_that
 @JsonSerializable()
 
 class _BuddyLook implements BuddyLook {
-  const _BuddyLook({required this.skinHex, required this.hairHex, required this.jacketHex, required this.shirtHex, required this.pantsHex, required this.shoesHex, this.hairStyle = HairStyle.spiky, this.hat = HatStyle.none, this.spectacles = false, this.defaultPropId = 'none'});
+  const _BuddyLook({required this.skinHex, required this.hairHex, required this.jacketHex, required this.shirtHex, required this.pantsHex, required this.shoesHex, this.hairStyle = HairStyle.spiky, this.hat = HatStyle.none, this.spectacles = false, this.defaultPropId = 'none', this.photoFace = false});
   factory _BuddyLook.fromJson(Map<String, dynamic> json) => _$BuddyLookFromJson(json);
 
 @override final  String skinHex;
@@ -232,6 +233,7 @@ class _BuddyLook implements BuddyLook {
 @override@JsonKey() final  HatStyle hat;
 @override@JsonKey() final  bool spectacles;
 @override@JsonKey() final  String defaultPropId;
+@override@JsonKey() final  bool photoFace;
 
 /// Create a copy of BuddyLook
 /// with the given fields replaced by the non-null parameter values.
@@ -246,16 +248,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BuddyLook&&(identical(other.skinHex, skinHex) || other.skinHex == skinHex)&&(identical(other.hairHex, hairHex) || other.hairHex == hairHex)&&(identical(other.jacketHex, jacketHex) || other.jacketHex == jacketHex)&&(identical(other.shirtHex, shirtHex) || other.shirtHex == shirtHex)&&(identical(other.pantsHex, pantsHex) || other.pantsHex == pantsHex)&&(identical(other.shoesHex, shoesHex) || other.shoesHex == shoesHex)&&(identical(other.hairStyle, hairStyle) || other.hairStyle == hairStyle)&&(identical(other.hat, hat) || other.hat == hat)&&(identical(other.spectacles, spectacles) || other.spectacles == spectacles)&&(identical(other.defaultPropId, defaultPropId) || other.defaultPropId == defaultPropId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BuddyLook&&(identical(other.skinHex, skinHex) || other.skinHex == skinHex)&&(identical(other.hairHex, hairHex) || other.hairHex == hairHex)&&(identical(other.jacketHex, jacketHex) || other.jacketHex == jacketHex)&&(identical(other.shirtHex, shirtHex) || other.shirtHex == shirtHex)&&(identical(other.pantsHex, pantsHex) || other.pantsHex == pantsHex)&&(identical(other.shoesHex, shoesHex) || other.shoesHex == shoesHex)&&(identical(other.hairStyle, hairStyle) || other.hairStyle == hairStyle)&&(identical(other.hat, hat) || other.hat == hat)&&(identical(other.spectacles, spectacles) || other.spectacles == spectacles)&&(identical(other.defaultPropId, defaultPropId) || other.defaultPropId == defaultPropId)&&(identical(other.photoFace, photoFace) || other.photoFace == photoFace));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,skinHex,hairHex,jacketHex,shirtHex,pantsHex,shoesHex,hairStyle,hat,spectacles,defaultPropId);
+int get hashCode => Object.hash(runtimeType,skinHex,hairHex,jacketHex,shirtHex,pantsHex,shoesHex,hairStyle,hat,spectacles,defaultPropId,photoFace);
 
 @override
 String toString() {
-  return 'BuddyLook(skinHex: $skinHex, hairHex: $hairHex, jacketHex: $jacketHex, shirtHex: $shirtHex, pantsHex: $pantsHex, shoesHex: $shoesHex, hairStyle: $hairStyle, hat: $hat, spectacles: $spectacles, defaultPropId: $defaultPropId)';
+  return 'BuddyLook(skinHex: $skinHex, hairHex: $hairHex, jacketHex: $jacketHex, shirtHex: $shirtHex, pantsHex: $pantsHex, shoesHex: $shoesHex, hairStyle: $hairStyle, hat: $hat, spectacles: $spectacles, defaultPropId: $defaultPropId, photoFace: $photoFace)';
 }
 
 
@@ -266,7 +268,7 @@ abstract mixin class _$BuddyLookCopyWith<$Res> implements $BuddyLookCopyWith<$Re
   factory _$BuddyLookCopyWith(_BuddyLook value, $Res Function(_BuddyLook) _then) = __$BuddyLookCopyWithImpl;
 @override @useResult
 $Res call({
- String skinHex, String hairHex, String jacketHex, String shirtHex, String pantsHex, String shoesHex, HairStyle hairStyle, HatStyle hat, bool spectacles, String defaultPropId
+ String skinHex, String hairHex, String jacketHex, String shirtHex, String pantsHex, String shoesHex, HairStyle hairStyle, HatStyle hat, bool spectacles, String defaultPropId, bool photoFace
 });
 
 
@@ -283,7 +285,7 @@ class __$BuddyLookCopyWithImpl<$Res>
 
 /// Create a copy of BuddyLook
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? skinHex = null,Object? hairHex = null,Object? jacketHex = null,Object? shirtHex = null,Object? pantsHex = null,Object? shoesHex = null,Object? hairStyle = null,Object? hat = null,Object? spectacles = null,Object? defaultPropId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? skinHex = null,Object? hairHex = null,Object? jacketHex = null,Object? shirtHex = null,Object? pantsHex = null,Object? shoesHex = null,Object? hairStyle = null,Object? hat = null,Object? spectacles = null,Object? defaultPropId = null,Object? photoFace = null,}) {
   return _then(_BuddyLook(
 skinHex: null == skinHex ? _self.skinHex : skinHex // ignore: cast_nullable_to_non_nullable
 as String,hairHex: null == hairHex ? _self.hairHex : hairHex // ignore: cast_nullable_to_non_nullable
@@ -295,7 +297,8 @@ as String,hairStyle: null == hairStyle ? _self.hairStyle : hairStyle // ignore: 
 as HairStyle,hat: null == hat ? _self.hat : hat // ignore: cast_nullable_to_non_nullable
 as HatStyle,spectacles: null == spectacles ? _self.spectacles : spectacles // ignore: cast_nullable_to_non_nullable
 as bool,defaultPropId: null == defaultPropId ? _self.defaultPropId : defaultPropId // ignore: cast_nullable_to_non_nullable
-as String,
+as String,photoFace: null == photoFace ? _self.photoFace : photoFace // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

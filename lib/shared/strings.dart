@@ -221,6 +221,9 @@ abstract final class Strings {
   };
   static const usuallyHolding = 'Usually holding';
   static const spectacles = 'Glasses'; // guard-ok: eyewear, not a drink
+  static const face = 'Face';
+  static const faceDrawn = 'Drawn';
+  static const facePhoto = 'Photo';
 
   // Analytics
   static const analyticsSubtitle = 'The last 7 days.';

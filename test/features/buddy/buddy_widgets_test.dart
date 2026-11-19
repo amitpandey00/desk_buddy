@@ -1,6 +1,7 @@
 import 'package:desk_buddy/features/buddy/domain/buddy_look.dart';
 import 'package:desk_buddy/features/buddy/movement/buddy_pose.dart';
 import 'package:desk_buddy/features/buddy/render/buddy_painter.dart';
+import 'package:desk_buddy/features/buddy/render/face_image.dart';
 import 'package:desk_buddy/features/buddy/ui/buddy_bubble.dart';
 import 'package:desk_buddy/features/buddy/ui/buddy_view.dart';
 import 'package:desk_buddy/shared/strings.dart';
@@ -16,15 +17,18 @@ Widget _host(Widget child) => WidgetsApp(
   ),
 );
 
-BuddyPose _pose(WidgetTester tester) {
-  final paint = tester.widget<CustomPaint>(
-    find.descendant(
-      of: find.byType(BuddyView),
-      matching: find.byType(CustomPaint),
-    ),
-  );
-  return (paint.painter! as BuddyPainter).pose.value;
-}
+BuddyPainter _painter(WidgetTester tester) =>
+    tester
+            .widget<CustomPaint>(
+              find.descendant(
+                of: find.byType(BuddyView),
+                matching: find.byType(CustomPaint),
+              ),
+            )
+            .painter!
+        as BuddyPainter;
+
+BuddyPose _pose(WidgetTester tester) => _painter(tester).pose.value;
 
 void main() {
   group('BuddyView', () {
@@ -39,6 +43,22 @@ void main() {
         ),
       );
       expect(tester.getSize(find.byType(BuddyView)), const Size(60, 111));
+    });
+
+    testWidgets('a photo-face look loads the face image', (tester) async {
+      await tester.pumpWidget(
+        _host(
+          const BuddyView(look: LookPresets.classic, state: BuddyState.idle),
+        ),
+      );
+      expect(_painter(tester).face, isNull);
+
+      await tester.pumpWidget(
+        _host(const BuddyView(look: LookPresets.me, state: BuddyState.idle)),
+      );
+      await tester.runAsync(BuddyFaceImage.load);
+      await tester.pump();
+      expect(_painter(tester).face, isNotNull);
     });
 
     testWidgets('walking animates every frame', (tester) async {

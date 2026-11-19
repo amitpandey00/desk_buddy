@@ -29,7 +29,7 @@ void main() {
       await source.settings.update(
         (s) => s.copyWith(userName: 'Sam', buddyX: 10, buddyY: 20),
       );
-      await source.settings.saveLook(LookPresets.cozy);
+      await source.settings.saveLook(LookPresets.me);
     });
     tearDown(() => source.close());
 
@@ -78,7 +78,7 @@ void main() {
         (await target.categories.all()).map((c) => c.name),
         isNot(contains('Only here')),
       );
-      expect(await target.settings.getLook(), LookPresets.cozy);
+      expect(await target.settings.getLook(), LookPresets.me);
       expect(topics.last, DataTopic.values.toSet());
     });
 

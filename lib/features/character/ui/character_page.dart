@@ -118,6 +118,15 @@ class CharacterPage extends ConsumerWidget {
                       ],
                     ),
                   ),
+                  chips<bool>(
+                    Strings.face,
+                    const [
+                      (false, Strings.faceDrawn),
+                      (true, Strings.facePhoto),
+                    ],
+                    look.photoFace,
+                    (l, v) => l.copyWith(photoFace: v),
+                  ),
                   chips<HairStyle>(
                     Strings.hair,
                     [

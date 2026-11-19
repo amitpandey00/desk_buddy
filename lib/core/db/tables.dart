@@ -92,6 +92,7 @@ class BuddyLooks extends Table {
   TextColumn get hat => textEnum<HatStyle>()();
   BoolColumn get spectacles => boolean()();
   TextColumn get defaultPropId => text()();
+  BoolColumn get photoFace => boolean().withDefault(const Constant(false))();
 
   @override
   Set<Column<Object>> get primaryKey => {id};

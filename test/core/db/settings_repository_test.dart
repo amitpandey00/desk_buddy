@@ -65,8 +65,8 @@ void main() {
   test('look round-trips and announces look', () async {
     final topics = <Set<DataTopic>>[];
     data.changes.stream.listen(topics.add);
-    await data.settings.saveLook(LookPresets.cozy);
-    expect(await data.settings.getLook(), LookPresets.cozy);
+    await data.settings.saveLook(LookPresets.me);
+    expect(await data.settings.getLook(), LookPresets.me);
     expect(topics, [
       {DataTopic.look},
     ]);

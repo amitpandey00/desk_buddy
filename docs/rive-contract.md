@@ -63,6 +63,9 @@ freely, including from `alert` straight back to `walking`.
 | `spectacles` | boolean | Glasses on/off |
 | `prop` | enum | `none`, `bottle`, `coffee`, `book`, `phone`, `dumbbell`, `pill`, held in the front hand |
 
+A look with **Face: Photo** (`photoFace`, D37) is always drawn by the painter,
+so the Rive file needs no property for it.
+
 **Props are data-driven.** The app sends the id of the prop the current
 reminder asks for, from `propRegistry` in
 `lib/features/buddy/render/props.dart`. When a prop is added there, add the
